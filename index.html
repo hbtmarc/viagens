@@ -2952,6 +2952,237 @@
             color: var(--error-600);
         }
 
+        @media (max-width: 900px) {
+            body {
+                padding: 1.25rem;
+            }
+
+            .main-container {
+                border-radius: 1.25rem;
+            }
+
+            .app-header {
+                padding: 2.5rem 2rem;
+            }
+
+            .travel-planner-tabs-container {
+                border-radius: 1rem 1rem 0 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0.75rem;
+            }
+
+            .main-container {
+                border-radius: 1rem;
+                box-shadow: 0 12px 35px rgba(15, 23, 42, 0.25);
+            }
+
+            #app-content {
+                padding: 1.25rem;
+            }
+
+            .app-header {
+                padding: 2rem 1.25rem 1.5rem;
+            }
+
+            .trip-selector-wrapper {
+                position: static;
+                width: 100%;
+                margin-bottom: 1.25rem;
+            }
+
+            .trip-selector-button {
+                width: 100%;
+            }
+
+            .app-title {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+
+            .app-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .travel-planner-tabs-container {
+                border-radius: 1rem;
+            }
+
+            .travel-planner-tabs {
+                gap: 0.5rem;
+                padding: 0.35rem;
+            }
+
+            .travel-tab {
+                flex: 0 0 auto;
+                min-width: fit-content;
+                padding: 0.85rem 1rem;
+                border-radius: 0.75rem;
+            }
+
+            .travel-tab .material-symbols-outlined {
+                font-size: 1.125rem;
+            }
+
+            .travel-tab-content {
+                padding: 1.25rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .travel-kpis-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.75rem;
+            }
+
+            .travel-cost-blocks {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .travelers-section,
+            .travel-planner-costs,
+            .installments-overview,
+            .payment-tracking,
+            .installment-group-section {
+                padding: 1.25rem;
+            }
+
+            .travelers-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .traveler-expense-row {
+                flex-direction: column;
+            }
+
+            .installment-summary-card {
+                padding: 1rem;
+            }
+
+            .installment-summary-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .installment-summary-main {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .installment-group-summary-top {
+                flex-direction: column;
+            }
+
+            .installment-group-breakdown {
+                grid-template-columns: 1fr;
+            }
+
+            .installment-months {
+                overflow-x: auto;
+                padding-bottom: 0.25rem;
+            }
+
+            .installment-month-chip {
+                flex: 0 0 auto;
+            }
+
+            .modern-table {
+                border-radius: 1rem;
+                border: 1px solid var(--gray-200);
+                overflow: hidden;
+                margin: 1.25rem 0;
+                box-shadow: none;
+            }
+
+            .modern-table thead {
+                display: none;
+            }
+
+            .modern-table tbody {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .modern-table tbody tr {
+                display: block;
+                border: 1px solid var(--gray-200);
+                border-radius: 1rem;
+                padding: 0.75rem 1rem;
+                background: var(--gray-50);
+                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+            }
+
+            .modern-table tbody tr:hover {
+                transform: none;
+                background-color: var(--gray-50);
+                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+            }
+
+            .modern-table td {
+                display: flex;
+                flex-direction: column;
+                gap: 0.35rem;
+                border-bottom: none;
+                padding: 0.5rem 0;
+            }
+
+            .modern-table td::before {
+                content: attr(data-label);
+                font-size: 0.7rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                color: var(--gray-500);
+                letter-spacing: 0.05em;
+            }
+
+            .modern-table td.actions-cell {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                justify-content: flex-start;
+            }
+
+            .modern-table td.actions-cell::before {
+                content: '';
+                display: none;
+            }
+
+            .modern-table td.empty-state {
+                display: block;
+                text-align: center;
+            }
+
+            .modern-table td.empty-state::before {
+                content: none;
+            }
+
+            .actions-cell {
+                justify-content: flex-start;
+            }
+
+            .split-summary-cell {
+                width: 100%;
+            }
+
+            .modal-container {
+                width: 100%;
+                border-radius: 1.25rem 1.25rem 0 0;
+                max-height: 100vh;
+                min-height: 80vh;
+            }
+        }
+
         @media (max-width: 640px) {
             body {
                 padding: 0.5rem;
@@ -7595,18 +7826,18 @@
 
             tbody.innerHTML = data.expenses.map((item, index) => `
                 <tr>
-                    <td>${item.description}</td>
-                    <td>${formatCurrency(item.realizedValue || item.estimatedValue)}</td>
-                    <td>${renderSplitSummaryCell(item)}</td>
-                    <td>${formatDate(item.date)}</td>
-                    <td>
+                    <td data-label="Descrição">${item.description}</td>
+                    <td data-label="Valor">${formatCurrency(item.realizedValue || item.estimatedValue)}</td>
+                    <td data-label="Divisão / Parcelas">${renderSplitSummaryCell(item)}</td>
+                    <td data-label="Data">${formatDate(item.date)}</td>
+                    <td data-label="Status">
                         <span style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; 
                                      background: ${item.paid ? 'rgba(16, 185, 129, 0.1)' : 'rgba(234, 179, 8, 0.1)'}; 
                                      color: ${item.paid ? '#059669' : '#ca8a04'};">
                             ${item.paid ? 'Pago' : 'Pendente'}
                         </span>
                     </td>
-                    <td class="actions-cell">
+                    <td class="actions-cell" data-label="Ações">
                         <div class="action-edit-group">
                             <button class="btn-icon edit-btn" onclick="openExpenseModal(${index})" title="Editar">
                                 <span class="material-symbols-outlined">edit</span>
@@ -7641,19 +7872,19 @@
 
             tbody.innerHTML = data.flights.map((item, index) => `
                 <tr>
-                    <td>${item.route}</td>
-                    <td>${formatDate(item.date)}</td>
-                    <td>${item.passenger}</td>
-                    <td>${formatCurrency(item.realizedValue || item.estimatedValue)}</td>
-                    <td>${renderSplitSummaryCell(item)}</td>
-                    <td>
+                    <td data-label="Trecho">${item.route}</td>
+                    <td data-label="Data">${formatDate(item.date)}</td>
+                    <td data-label="Passageiro">${item.passenger}</td>
+                    <td data-label="Valor">${formatCurrency(item.realizedValue || item.estimatedValue)}</td>
+                    <td data-label="Divisão / Parcelas">${renderSplitSummaryCell(item)}</td>
+                    <td data-label="Status">
                         <span style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; 
                                      background: ${item.paid ? 'rgba(16, 185, 129, 0.1)' : 'rgba(234, 179, 8, 0.1)'}; 
                                      color: ${item.paid ? '#059669' : '#ca8a04'};">
                             ${item.paid ? 'Pago' : 'Pendente'}
                         </span>
                     </td>
-                    <td class="actions-cell">
+                    <td class="actions-cell" data-label="Ações">
                         <div class="action-edit-group">
                             <button class="btn-icon edit-btn" onclick="openFlightModal(${index})" title="Editar">
                                 <span class="material-symbols-outlined">edit</span>
@@ -7688,20 +7919,20 @@
 
             tbody.innerHTML = data.accommodation.map((item, index) => `
                 <tr>
-                    <td>${item.location}</td>
-                    <td>${formatDate(item.checkIn)}</td>
-                    <td>${formatDate(item.checkOut)}</td>
-                    <td>${item.nights || '-'}</td>
-                    <td>${formatCurrency(item.realizedValue || item.estimatedValue)}</td>
-                    <td>${renderSplitSummaryCell(item)}</td>
-                    <td>
+                    <td data-label="Local">${item.location}</td>
+                    <td data-label="Check-in">${formatDate(item.checkIn)}</td>
+                    <td data-label="Check-out">${formatDate(item.checkOut)}</td>
+                    <td data-label="Diárias">${item.nights || '-'}</td>
+                    <td data-label="Valor">${formatCurrency(item.realizedValue || item.estimatedValue)}</td>
+                    <td data-label="Divisão / Parcelas">${renderSplitSummaryCell(item)}</td>
+                    <td data-label="Status">
                         <span style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; 
                                      background: ${item.paid ? 'rgba(16, 185, 129, 0.1)' : 'rgba(234, 179, 8, 0.1)'}; 
                                      color: ${item.paid ? '#059669' : '#ca8a04'};">
                             ${item.paid ? 'Pago' : 'Pendente'}
                         </span>
                     </td>
-                    <td class="actions-cell">
+                    <td class="actions-cell" data-label="Ações">
                         <div class="action-edit-group">
                             <button class="btn-icon edit-btn" onclick="openAccommodationModal(${index})" title="Editar">
                                 <span class="material-symbols-outlined">edit</span>
@@ -7736,19 +7967,19 @@
 
             tbody.innerHTML = data.transport.map((item, index) => `
                 <tr>
-                    <td>${item.type}</td>
-                    <td>${item.description}</td>
-                    <td>${formatDate(item.date)}</td>
-                    <td>${formatCurrency(item.realizedValue || item.estimatedValue)}</td>
-                    <td>${renderSplitSummaryCell(item)}</td>
-                    <td>
+                    <td data-label="Tipo">${item.type}</td>
+                    <td data-label="Descrição">${item.description}</td>
+                    <td data-label="Data">${formatDate(item.date)}</td>
+                    <td data-label="Valor">${formatCurrency(item.realizedValue || item.estimatedValue)}</td>
+                    <td data-label="Divisão / Parcelas">${renderSplitSummaryCell(item)}</td>
+                    <td data-label="Status">
                         <span style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; 
                                      background: ${item.paid ? 'rgba(16, 185, 129, 0.1)' : 'rgba(234, 179, 8, 0.1)'}; 
                                      color: ${item.paid ? '#059669' : '#ca8a04'};">
                             ${item.paid ? 'Pago' : 'Pendente'}
                         </span>
                     </td>
-                    <td class="actions-cell">
+                    <td class="actions-cell" data-label="Ações">
                         <div class="action-edit-group">
                             <button class="btn-icon edit-btn" onclick="openTransportModal(${index})" title="Editar">
                                 <span class="material-symbols-outlined">edit</span>
@@ -7783,19 +8014,19 @@
 
             tbody.innerHTML = data.food.map((item, index) => `
                 <tr>
-                    <td>${item.location}</td>
-                    <td>${item.type}</td>
-                    <td>${formatDate(item.date)}</td>
-                    <td>${formatCurrency(item.realizedValue || item.estimatedValue)}</td>
-                    <td>${renderSplitSummaryCell(item)}</td>
-                    <td>
+                    <td data-label="Local">${item.location}</td>
+                    <td data-label="Tipo">${item.type}</td>
+                    <td data-label="Data">${formatDate(item.date)}</td>
+                    <td data-label="Valor">${formatCurrency(item.realizedValue || item.estimatedValue)}</td>
+                    <td data-label="Divisão / Parcelas">${renderSplitSummaryCell(item)}</td>
+                    <td data-label="Status">
                         <span style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; 
                                      background: ${item.paid ? 'rgba(16, 185, 129, 0.1)' : 'rgba(234, 179, 8, 0.1)'}; 
                                      color: ${item.paid ? '#059669' : '#ca8a04'};">
                             ${item.paid ? 'Pago' : 'Pendente'}
                         </span>
                     </td>
-                    <td class="actions-cell">
+                    <td class="actions-cell" data-label="Ações">
                         <div class="action-edit-group">
                             <button class="btn-icon edit-btn" onclick="openFoodModal(${index})" title="Editar">
                                 <span class="material-symbols-outlined">edit</span>
