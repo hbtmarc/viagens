@@ -1201,6 +1201,66 @@
             border: 1px solid var(--gray-200);
         }
 
+        .installment-month-subcards {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            width: 100%;
+        }
+
+        .installment-month-subcard {
+            border: 1px solid var(--gray-150);
+            border-radius: 0.9rem;
+            padding: 0.75rem 0.95rem;
+            background: white;
+            width: 100%;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+        }
+
+        .installment-month-subcard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .installment-month-subcard-header strong {
+            color: var(--gray-800);
+            font-size: 0.9rem;
+        }
+
+        .installment-month-subcard-header span {
+            color: var(--primary-700);
+            font-weight: 700;
+        }
+
+        .installment-month-subcard-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .installment-month-subcard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--gray-600);
+        }
+
+        .installment-month-subcard-item strong {
+            font-size: 0.85rem;
+            color: var(--gray-800);
+        }
+
+        .installment-month-subcard-item small {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--gray-500);
+            text-align: right;
+        }
+
         .installment-group-section {
             margin-top: 2rem;
             padding: 1.5rem;
@@ -1305,6 +1365,46 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 1rem;
+        }
+
+        .installment-group-breakdown-compact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .installment-group-breakdown-row {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.75rem;
+            background: var(--gray-50);
+            padding: 0.75rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .installment-group-breakdown-month {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .installment-group-breakdown-month strong {
+            font-size: 0.95rem;
+            color: var(--gray-800);
+        }
+
+        .installment-group-breakdown-month span {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--primary-700);
+        }
+
+        .installment-group-breakdown-categories {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            line-height: 1.5;
         }
 
         .installment-group-month-card {
@@ -1484,12 +1584,24 @@
             margin-bottom: 0.85rem;
         }
 
+        .installment-detail-month-compact {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--gray-50);
+            margin-bottom: 0.5rem;
+        }
+
         .installment-detail-month-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 0.75rem;
             gap: 0.5rem;
+        }
+
+        .installment-detail-month-compact .installment-detail-month-header {
+            margin-bottom: 0.5rem;
         }
 
         .installment-detail-month-header span {
@@ -1500,6 +1612,12 @@
         .installment-detail-month-header strong {
             color: var(--primary-700);
             font-size: 1rem;
+        }
+
+        .installment-detail-categories-line {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            line-height: 1.5;
         }
 
         .payment-detail-overlay {
@@ -1722,7 +1840,7 @@
         .split-summary-cell {
             display: flex;
             flex-direction: column;
-            gap: 0.35rem;
+            gap: 0.5rem;
         }
 
         .payment-plan-chip {
@@ -1742,13 +1860,49 @@
             background: rgba(139, 92, 246, 0.12);
         }
 
-        .split-summary-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
+        .split-summary-pill-list {
             display: flex;
             flex-direction: column;
             gap: 0.35rem;
+        }
+
+        .split-summary-pill {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.65rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--gray-200);
+            background: var(--gray-50);
+        }
+
+        .split-pill-meta span {
+            font-size: 0.85rem;
+            color: var(--gray-800);
+            font-weight: 600;
+        }
+
+        .split-pill-meta small {
+            display: block;
+            margin-top: 0.15rem;
+            font-size: 0.72rem;
+            color: var(--gray-500);
+        }
+
+        .split-pill-value {
+            text-align: right;
+        }
+
+        .split-pill-value strong {
+            font-size: 0.95rem;
+            color: var(--primary-700);
+        }
+
+        .split-pill-value small {
+            display: block;
+            margin-top: 0.1rem;
+            font-size: 0.72rem;
+            color: var(--gray-500);
         }
 
         .payment-detail-overlay {
@@ -1991,29 +2145,10 @@
             font-size: 0.85rem;
         }
 
-        .split-summary-list li {
-            display: flex;
-            flex-direction: column;
-            gap: 0.1rem;
-            padding: 0.25rem 0.35rem;
-            border-radius: 0.45rem;
-            background: rgba(15, 23, 42, 0.03);
-        }
-
-        .split-summary-list span {
-            font-size: 0.8125rem;
-            color: var(--gray-600);
-            font-weight: 600;
-        }
-
-        .split-summary-list strong {
-            font-size: 0.875rem;
-            color: var(--gray-900);
-        }
-
-        .split-summary-list small {
-            font-size: 0.75rem;
-            color: var(--gray-500);
+        .split-summary-pill-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
         }
 
         .header-content {
@@ -3087,6 +3222,28 @@
                 grid-template-columns: 1fr;
             }
 
+            .installment-group-breakdown-compact {
+                font-size: 0.85rem;
+            }
+
+            .installment-group-breakdown-row {
+                padding: 0.6rem 0.8rem;
+            }
+
+            .installment-month-subcards {
+                gap: 0.45rem;
+            }
+
+            .installment-month-subcard {
+                padding: 0.65rem 0.75rem;
+            }
+
+            .installment-month-subcard-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.15rem;
+            }
+
             .installment-months {
                 overflow-x: auto;
                 padding-bottom: 0.25rem;
@@ -3173,6 +3330,15 @@
 
             .split-summary-cell {
                 width: 100%;
+            }
+
+            .split-summary-pill {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .split-pill-value {
+                text-align: left;
             }
 
             .modal-container {
@@ -3562,10 +3728,16 @@
                             <span class="material-symbols-outlined">event_repeat</span>
                             Parcelas por Viajante
                         </h3>
-                        <button class="modern-btn modern-btn-secondary modern-btn-sm" onclick="renderInstallmentsSchedule(true)">
-                            <span class="material-symbols-outlined">refresh</span>
-                            Atualizar
-                        </button>
+                        <div class="installments-overview-actions">
+                            <button class="modern-btn modern-btn-secondary modern-btn-sm" onclick="renderInstallmentsSchedule(true)">
+                                <span class="material-symbols-outlined">refresh</span>
+                                Atualizar
+                            </button>
+                            <button id="toggle-installments-group-btn" class="modern-btn modern-btn-ghost modern-btn-sm" onclick="toggleInstallmentsCategoryGrouping()">
+                                <span class="material-symbols-outlined">category</span>
+                                Agrupar por categoria
+                            </button>
+                        </div>
                     </div>
                     <div id="installments-summary-list" class="installments-summary-grid"></div>
                 </div>
@@ -3591,9 +3763,15 @@
                                 <span class="material-symbols-outlined">badge</span>
                                 <span id="installment-detail-name">Viajante</span>
                             </h3>
-                            <button class="installment-detail-close" onclick="closeTravelerInstallments()">
-                                <span class="material-symbols-outlined">close</span>
-                            </button>
+                            <div class="installment-detail-actions">
+                                <button id="toggle-installment-detail-group-btn" class="modern-btn modern-btn-ghost modern-btn-sm" onclick="toggleInstallmentDetailCategoryGrouping()">
+                                    <span class="material-symbols-outlined">category</span>
+                                    Agrupar por categoria
+                                </button>
+                                <button class="installment-detail-close" onclick="closeTravelerInstallments()">
+                                    <span class="material-symbols-outlined">close</span>
+                                </button>
+                            </div>
                         </div>
                         <div class="installment-detail-stats">
                             <div class="installment-detail-stat">
@@ -6278,6 +6456,50 @@
             `}).join('');
         }
 
+        let installmentsGroupedByCategory = false;
+
+        function toggleInstallmentsCategoryGrouping() {
+            installmentsGroupedByCategory = !installmentsGroupedByCategory;
+            const btn = document.getElementById('toggle-installments-group-btn');
+            if (btn) {
+                btn.classList.toggle('active', installmentsGroupedByCategory);
+                btn.innerHTML = installmentsGroupedByCategory
+                    ? '<span class="material-symbols-outlined">category</span> Ver por parcelas'
+                    : '<span class="material-symbols-outlined">category</span> Agrupar por categoria';
+            }
+            // Re-render mantendo o schedule já calculado quando possível
+            renderInstallmentsSchedule(true);
+        }
+
+        function getTravelerInstallmentsView(rawInstallments) {
+            // Na visão padrão, usamos as parcelas diretamente
+            if (!installmentsGroupedByCategory) return rawInstallments;
+            if (!Array.isArray(rawInstallments) || rawInstallments.length === 0) return [];
+
+            // Para os cards, queremos manter meses + categorias, então aqui só agregamos por categoria
+            const byCategory = new Map();
+            rawInstallments.forEach(inst => {
+                const key = inst.category || 'other';
+                if (!byCategory.has(key)) {
+                    byCategory.set(key, {
+                        category: key,
+                        label: inst.label || 'Despesa',
+                        amount: 0,
+                        count: 0,
+                        paidCount: 0,
+                        items: []
+                    });
+                }
+                const agg = byCategory.get(key);
+                agg.amount += inst.amount || 0;
+                agg.count += 1;
+                if (inst.paid) agg.paidCount += 1;
+                agg.items.push(inst);
+            });
+
+            return Array.from(byCategory.values());
+        }
+
         function renderInstallmentsSchedule(force = false) {
             const section = document.getElementById('overview-installments-section');
             const container = document.getElementById('installments-summary-list');
@@ -6336,23 +6558,24 @@
             }
 
             const cardsHtml = trip.travelers.map(traveler => {
-                const installments = schedule[traveler.name];
-                if (!installments || installments.length === 0) {
+                const baseInstallments = schedule[traveler.name];
+                if (!baseInstallments || baseInstallments.length === 0) {
                     return '';
                 }
 
                 const safeNameForHandler = escapeJsString(traveler.name);
 
-                installments.sort((a, b) => {
+                // Sempre calculamos total e próximo usando as parcelas originais
+                const ordered = baseInstallments.slice().sort((a, b) => {
                     if (a.dueDate && b.dueDate) return new Date(a.dueDate) - new Date(b.dueDate);
                     if (a.dueDate) return -1;
                     if (b.dueDate) return 1;
                     return a.installmentNumber - b.installmentNumber;
                 });
 
-                const total = installments.reduce((sum, inst) => sum + inst.amount, 0);
-                const monthGroups = groupInstallmentsByMonth(installments);
-                const nextInstallment = getNextInstallmentInfo(installments);
+                const total = ordered.reduce((sum, inst) => sum + (inst.amount || 0), 0);
+                const monthGroups = groupInstallmentsByMonth(ordered);
+                const nextInstallment = getNextInstallmentInfo(ordered);
                 const MAX_VISIBLE_MONTHS = 5;
                 const visibleMonths = monthGroups.slice(0, MAX_VISIBLE_MONTHS);
                 const extraMonths = Math.max(0, monthGroups.length - MAX_VISIBLE_MONTHS);
@@ -6384,7 +6607,7 @@
                             <div class="traveler-avatar">${traveler.initials}</div>
                             <div>
                                 <strong>${traveler.name}</strong>
-                                <span>${installments.length} parcela${installments.length > 1 ? 's' : ''} • Total ${formatCurrency(total)}</span>
+                                <span>${ordered.length} parcela${ordered.length > 1 ? 's' : ''} • Total ${formatCurrency(total)}</span>
                             </div>
                             <div class="installment-summary-cta">
                                 Detalhar
@@ -6408,8 +6631,73 @@
                             </div>
                         </div>
                         <div class="installment-months">
-                            ${monthsHtml}
-                            ${extraHtml}
+                            ${!installmentsGroupedByCategory
+                                ? monthsHtml + extraHtml
+                                : (() => {
+                                    const monthItemMap = new Map();
+                                    ordered.forEach(inst => {
+                                        const monthKey = inst.dueDate ? inst.dueDate.slice(0, 7) : 'sem-data';
+                                        if (!monthItemMap.has(monthKey)) {
+                                            monthItemMap.set(monthKey, []);
+                                        }
+                                        monthItemMap.get(monthKey).push(inst);
+                                    });
+
+                                    const subcards = visibleMonths.map(month => {
+                                        const items = monthItemMap.get(month.key) || [];
+                                        if (!items.length) return '';
+
+                                        const catMap = new Map();
+                                        items.forEach(inst => {
+                                            const catKey = inst.category || 'expenses';
+                                            if (!catMap.has(catKey)) {
+                                                catMap.set(catKey, {
+                                                    key: catKey,
+                                                    amount: 0,
+                                                    count: 0
+                                                });
+                                            }
+                                            const agg = catMap.get(catKey);
+                                            agg.amount += inst.amount || 0;
+                                            agg.count += 1;
+                                        });
+
+                                        const categories = Array.from(catMap.values())
+                                            .sort((a, b) => b.amount - a.amount)
+                                            .map(cat => {
+                                                const label = CATEGORY_LABELS[cat.key] || 'Despesa';
+                                                return `
+                                                    <div class="installment-month-subcard-item">
+                                                        <span>${label}</span>
+                                                        <div>
+                                                            <strong>${formatCurrency(cat.amount)}</strong>
+                                                            <small>${cat.count} parcela${cat.count > 1 ? 's' : ''}</small>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                            }).join('');
+
+                                        return `
+                                            <div class="installment-month-subcard">
+                                                <div class="installment-month-subcard-header">
+                                                    <strong>${month.label}</strong>
+                                                    <span>${formatCurrency(month.amount)}</span>
+                                                </div>
+                                                <div class="installment-month-subcard-body">
+                                                    ${categories || '<small>Sem categorias registradas</small>'}
+                                                </div>
+                                            </div>
+                                        `;
+                                    }).filter(Boolean).join('');
+
+                                    const moreIndicator = extraMonths > 0
+                                        ? `<span class="installment-month-chip">+${extraMonths} mes${extraMonths > 1 ? 'es' : ''}</span>`
+                                        : '';
+
+                                    return subcards
+                                        ? `<div class="installment-month-subcards">${subcards}</div>${moreIndicator}`
+                                        : '<span class="installment-month-chip">Sem parcelas futuras</span>';
+                                })()}
                         </div>
                     </div>
                 `;
@@ -6435,6 +6723,47 @@
             }
         }
 
+        let installmentDetailGroupedByCategory = false;
+
+        function toggleInstallmentDetailCategoryGrouping() {
+            installmentDetailGroupedByCategory = !installmentDetailGroupedByCategory;
+            const btn = document.getElementById('toggle-installment-detail-group-btn');
+            if (btn) {
+                btn.classList.toggle('active', installmentDetailGroupedByCategory);
+                btn.innerHTML = installmentDetailGroupedByCategory
+                    ? '<span class="material-symbols-outlined">category</span> Ver por parcelas'
+                    : '<span class="material-symbols-outlined">category</span> Agrupar por categoria';
+            }
+            if (activeInstallmentsTraveler) {
+                populateTravelerInstallmentDetail(activeInstallmentsTraveler);
+            }
+        }
+
+        function getDetailInstallmentsView(installments) {
+            // Agrupa por categoria, mas será chamado por mês
+            if (!Array.isArray(installments) || installments.length === 0) return [];
+
+            const byCategory = new Map();
+            installments.forEach(inst => {
+                const key = inst.category || 'other';
+                if (!byCategory.has(key)) {
+                    byCategory.set(key, {
+                        category: key,
+                        label: inst.label || 'Despesa',
+                        amount: 0,
+                        count: 0,
+                        items: []
+                    });
+                }
+                const agg = byCategory.get(key);
+                agg.amount += inst.amount || 0;
+                agg.count += 1;
+                agg.items.push(inst);
+            });
+
+            return Array.from(byCategory.values());
+        }
+
         function populateTravelerInstallmentDetail(name) {
             const installments = travelerInstallmentsCache[name];
             const nameEl = document.getElementById('installment-detail-name');
@@ -6456,27 +6785,46 @@
             const total = ordered.reduce((sum, inst) => sum + inst.amount, 0);
             const nextInstallment = getNextInstallmentInfo(ordered);
 
-            const monthMap = new Map();
-            ordered.forEach(inst => {
-                const key = inst.dueDate ? inst.dueDate.slice(0, 7) : 'sem-data';
-                if (!monthMap.has(key)) {
-                    monthMap.set(key, {
-                        key,
-                        label: key === 'sem-data' ? 'Sem data definida' : formatMonthYearLabel(key),
-                        amount: 0,
-                        items: []
-                    });
-                }
-                const group = monthMap.get(key);
-                group.amount += inst.amount;
-                group.items.push(inst);
-            });
+            const baseGroups = (() => {
+                // Primeiro, sempre agrupa por mês
+                const monthMap = new Map();
+                ordered.forEach(inst => {
+                    const key = inst.dueDate ? inst.dueDate.slice(0, 7) : 'sem-data';
+                    if (!monthMap.has(key)) {
+                        monthMap.set(key, {
+                            key,
+                            label: key === 'sem-data' ? 'Sem data definida' : formatMonthYearLabel(key),
+                            amount: 0,
+                            items: []
+                        });
+                    }
+                    const group = monthMap.get(key);
+                    group.amount += inst.amount;
+                    group.items.push(inst);
+                });
 
-            const monthGroups = Array.from(monthMap.values()).sort((a, b) => {
-                if (a.key === 'sem-data') return 1;
-                if (b.key === 'sem-data') return -1;
-                return a.key.localeCompare(b.key);
-            });
+                const months = Array.from(monthMap.values()).sort((a, b) => {
+                    if (a.key === 'sem-data') return 1;
+                    if (b.key === 'sem-data') return -1;
+                    return a.key.localeCompare(b.key);
+                });
+
+                if (!installmentDetailGroupedByCategory) {
+                    return months;
+                }
+
+                // Quando agrupado por categoria, manter o mês, mas dentro dele
+                return months.map(month => {
+                    const categories = getDetailInstallmentsView(month.items).sort((a, b) => (b.amount || 0) - (a.amount || 0));
+                    return {
+                        key: month.key,
+                        label: month.label,
+                        amount: month.amount,
+                        // cada "item" agora é uma categoria com suas parcelas
+                        items: categories
+                    };
+                });
+            })();
 
             nameEl.textContent = name;
             totalEl.textContent = formatCurrency(total);
@@ -6484,24 +6832,55 @@
                 ? `${formatCurrency(nextInstallment.amount)}${nextInstallment.dueDate ? ' • ' + formatDate(nextInstallment.dueDate) : ''}`
                 : 'Sem parcelas futuras';
 
-            listEl.innerHTML = monthGroups.map(group => `
-                <div class="installment-detail-month">
-                    <div class="installment-detail-month-header">
-                        <span>${group.label}</span>
-                        <strong>${formatCurrency(group.amount)}</strong>
-                    </div>
-                    ${group.items.map(inst => `
-                        <div class="installment-schedule-item">
-                            <div>
-                                <div style="font-weight:600; color: var(--gray-700);">${inst.label}</div>
-                                <div style="font-size:0.85rem; color: var(--gray-600);">${inst.description}</div>
-                                <small>#${inst.installmentNumber}${inst.dueDate ? ` • ${formatDate(inst.dueDate)}` : ''}${inst.paid ? ' • Pago' : ''}</small>
+            listEl.innerHTML = baseGroups.map(group => {
+                if (!installmentDetailGroupedByCategory) {
+                    // Modo padrão: lista detalhada de parcelas
+                    return `
+                        <div class="installment-detail-month">
+                            <div class="installment-detail-month-header">
+                                <span>${group.label}</span>
+                                <strong>${formatCurrency(group.amount)}</strong>
                             </div>
-                            <div class="installment-schedule-amount">${formatCurrency(inst.amount)}</div>
+                            ${group.items.map(inst => `
+                                <div class="installment-schedule-item">
+                                    <div>
+                                        <div style="font-weight:600; color: var(--gray-700);">${inst.label}</div>
+                                        <div style="font-size:0.85rem; color: var(--gray-600);">${inst.description}</div>
+                                        <small>#${inst.installmentNumber}${inst.dueDate ? ` • ${formatDate(inst.dueDate)}` : ''}${inst.paid ? ' • Pago' : ''}</small>
+                                    </div>
+                                    <div class="installment-schedule-amount">${formatCurrency(inst.amount)}</div>
+                                </div>
+                            `).join('')}
                         </div>
-                    `).join('')}
-                </div>
-            `).join('');
+                    `;
+                }
+
+                // Modo agrupado por categoria: usar subcards com as mesmas classes
+                const categories = group.items.map(cat => {
+                    const label = CATEGORY_LABELS[cat.category] || cat.label || 'Despesa';
+                    return `
+                        <div class="installment-month-subcard-item">
+                            <span>${label}</span>
+                            <div>
+                                <strong>${formatCurrency(cat.amount)}</strong>
+                                <small>${cat.count} compra${cat.count > 1 ? 's' : ''}</small>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="installment-month-subcard">
+                        <div class="installment-month-subcard-header">
+                            <strong>${group.label}</strong>
+                            <span>${formatCurrency(group.amount)}</span>
+                        </div>
+                        <div class="installment-month-subcard-body">
+                            ${categories}
+                        </div>
+                    </div>
+                `;
+            }).join('');
 
             return true;
         }
@@ -6647,37 +7026,53 @@
             const breakdownToggleHtml = breakdownGroups.length
                 ? `<button type="button" class="installment-breakdown-toggle" onclick="toggleInstallmentGroupBreakdown()">
                         <span class="material-symbols-outlined" style="font-size:1rem;">${installmentGroupBreakdownVisible ? 'expand_less' : 'expand_more'}</span>
-                        ${installmentGroupBreakdownVisible ? 'Ocultar detalhes mensais' : 'Detalhar meses'}
+                        ${installmentGroupBreakdownVisible ? 'Ocultar detalhamento' : 'Ver detalhamento por categoria'}
                    </button>`
                 : '';
 
             const breakdownHtml = installmentGroupBreakdownVisible && breakdownGroups.length
-                ? `<div class="installment-group-breakdown">
-                        ${breakdownGroups.map(group => `
-                            <div class="installment-group-month-card">
-                                <div class="installment-group-month-header">
-                                    <div>
-                                        <strong>${group.label}</strong>
-                                        <small>${group.count} parcela${group.count > 1 ? 's' : ''}</small>
-                                    </div>
-                                    <span>${formatCurrency(group.amount)}</span>
-                                </div>
-                                <div class="installment-group-month-list">
-                                    ${group.items.map(inst => `
-                                        <div class="installment-group-month-item">
+                ? `<div class="installment-month-subcards">
+                        ${breakdownGroups.map(group => {
+                            const catMap = new Map();
+                            group.items.forEach(inst => {
+                                const key = inst.category || 'expenses';
+                                if (!catMap.has(key)) {
+                                    catMap.set(key, { key, amount: 0, count: 0 });
+                                }
+                                const agg = catMap.get(key);
+                                agg.amount += inst.amount || 0;
+                                agg.count += 1;
+                            });
+
+                            const categories = Array.from(catMap.values())
+                                .sort((a, b) => b.amount - a.amount)
+                                .map(cat => {
+                                    const label = CATEGORY_LABELS[cat.key] || 'Despesa';
+                                    return `
+                                        <div class="installment-month-subcard-item">
+                                            <span>${label}</span>
                                             <div>
-                                                <strong>${inst.traveler || 'Viajante'}</strong>
-                                                <small>${inst.label}${inst.description ? ' • ' + inst.description : ''}</small>
-                                                <small>#${inst.installmentNumber}${inst.dueDate ? ' • ' + formatDate(inst.dueDate) : ''}</small>
+                                                <strong>${formatCurrency(cat.amount)}</strong>
+                                                <small>${cat.count} compra${cat.count > 1 ? 's' : ''}</small>
                                             </div>
-                                            <span>${formatCurrency(inst.amount)}</span>
                                         </div>
-                                    `).join('')}
+                                    `;
+                                }).join('');
+
+                            return `
+                                <div class="installment-month-subcard">
+                                    <div class="installment-month-subcard-header">
+                                        <strong>${group.label}</strong>
+                                        <span>${formatCurrency(group.amount)}</span>
+                                    </div>
+                                    <div class="installment-month-subcard-body">
+                                        ${categories}
+                                    </div>
                                 </div>
-                            </div>
-                        `).join('')}
+                            `;
+                        }).join('')}
                     </div>`
-                : '<div class="installment-group-month-empty">Sem parcelas agrupadas para mostrar.</div>';
+                : '';
 
             summary.innerHTML = `
                 <div class="installment-group-summary-top">
@@ -7775,34 +8170,76 @@
         }
 
         function renderSplitSummaryCell(item = {}) {
-            const plan = ensurePaymentPlan(item);
+            const plan = ensurePaymentPlan(item) || { type: 'single', installments: 1 };
             const splitBetween = Array.isArray(item.splitBetween) ? item.splitBetween : [];
             const details = getItemInstallmentDetails(item);
             const totalValue = details.reduce((sum, detail) => sum + (parseFloat(detail.amount) || 0), 0) || getItemValue(item);
-            const isInstallment = plan.type === 'installment' && plan.installments > 1;
             const travelerMap = buildTravelerInstallmentMap(details, splitBetween);
+            const hasTravelers = Object.keys(travelerMap).length > 0;
+            const isInstallment = plan && plan.type === 'installment' && plan.installments > 1;
 
-            if (Object.keys(travelerMap).length === 0) {
+            if (!hasTravelers) {
                 return `<div class="split-summary-cell">${renderPaymentPlanChip(plan)}<span class="split-summary-empty">Sem divisão configurada</span></div>`;
             }
             if (totalValue === 0) {
                 return `<div class="split-summary-cell">${renderPaymentPlanChip(plan)}<span class="split-summary-empty">Informe um valor para calcular</span></div>`;
             }
 
-            const travelersHtml = Object.entries(travelerMap).map(([name, info]) => `
-                <li>
-                    <span>${name}</span>
-                    <strong>${formatCurrency(info.total)}</strong>
-                    ${isInstallment ? `<small>${info.installments.map(inst => `#${inst.number} ${formatCurrency(inst.amount)}${inst.dueDate ? ` • ${formatDate(inst.dueDate)}` : ''}`).join('<br>')}</small>` : ''}
-                </li>
-            `).join('');
+            const buildInstallmentLabels = (info = {}) => {
+                const sorted = (info.installments || []).slice().sort((a, b) => {
+                    if (a.number != null && b.number != null) return a.number - b.number;
+                    if (a.dueDate && b.dueDate) return new Date(a.dueDate) - new Date(b.dueDate);
+                    return 0;
+                });
+                const count = sorted.length || 1;
+
+                if (!isInstallment || count <= 1) {
+                    const dueLabel = sorted[0] && sorted[0].dueDate ? `Vencimento ${formatDate(sorted[0].dueDate)}` : '';
+                    return {
+                        main: 'Pagamento único',
+                        secondary: dueLabel
+                    };
+                }
+
+                const baseAmount = sorted[0]?.amount || (info.total / count);
+                const firstDate = sorted[0]?.dueDate ? formatDate(sorted[0].dueDate) : '';
+                const lastDate = sorted[count - 1]?.dueDate ? formatDate(sorted[count - 1].dueDate) : '';
+
+                let secondary = '';
+                if (firstDate && lastDate) {
+                    secondary = firstDate === lastDate ? `Início ${firstDate}` : `${firstDate} — ${lastDate}`;
+                } else if (lastDate) {
+                    secondary = `Até ${lastDate}`;
+                }
+
+                return {
+                    main: `${count}x de ${formatCurrency(baseAmount)}`,
+                    secondary
+                };
+            };
+
+            const travelersHtml = Object.entries(travelerMap).map(([name, info]) => {
+                const labels = buildInstallmentLabels(info);
+                return `
+                    <div class="split-summary-pill">
+                        <div class="split-pill-meta">
+                            <span>${name}</span>
+                            <small>${labels.main}</small>
+                        </div>
+                        <div class="split-pill-value">
+                            <strong>${formatCurrency(info.total)}</strong>
+                            ${labels.secondary ? `<small>${labels.secondary}</small>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
 
             return `
                 <div class="split-summary-cell">
                     ${renderPaymentPlanChip(plan)}
-                    <ul class="split-summary-list">
+                    <div class="split-summary-pill-list">
                         ${travelersHtml}
-                    </ul>
+                    </div>
                 </div>
             `;
         }
