@@ -537,6 +537,7 @@
             }
         }
 
+
         /* ===== ESTADO VAZIO MELHORADO ===== */
         .welcome-state {
             text-align: center;
@@ -914,6 +915,18 @@
             margin-bottom: 1.5rem;
         }
 
+        .payment-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+        }
+
+        @media (min-width: 1024px) {
+            .payment-cards-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
         .payment-tracking-header h3 {
             display: flex;
             align-items: center;
@@ -923,6 +936,94 @@
             color: var(--gray-800);
             margin: 0;
             line-height: 1;
+        }
+
+        .payment-card {
+            background: white;
+            border: 2px solid var(--gray-100);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            box-shadow: 0 6px 18px -10px rgba(15, 23, 42, 0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .payment-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-200);
+        }
+
+        .payment-card-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .payment-card-person {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .payment-card-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray-500);
+        }
+
+        .payment-card-amount {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .payment-card-amount span {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gray-500);
+        }
+
+        .payment-card-amount strong {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .payment-card-amount.amount-green strong {
+            color: #0f9d58;
+        }
+
+        .payment-card-amount.amount-yellow strong {
+            color: #f59e0b;
+        }
+
+        .payment-card-amount.amount-red strong {
+            color: #d93025;
+        }
+
+        .payment-card-detail {
+            border: none;
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary-700);
+            font-weight: 600;
+            border-radius: 999px;
+            padding: 0.45rem 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+            align-self: flex-start;
+            font-size: 0.85rem;
+        }
+
+        .payment-card-detail:hover {
+            background: rgba(14, 165, 233, 0.2);
         }
 
         .travelers-grid {
@@ -3712,12 +3813,8 @@
                             <span class="material-symbols-outlined">account_balance_wallet</span>
                             Quem Deve para Quem
                         </h3>
-                        <button class="modern-btn modern-btn-secondary modern-btn-sm" onclick="recalculateBalances()">
-                            <span class="material-symbols-outlined">refresh</span>
-                            Atualizar
-                        </button>
                     </div>
-                    <div id="payment-items-list">
+                    <div id="payment-items-list" class="payment-cards-grid">
                         <!-- Itens de pagamento serão renderizados aqui -->
                     </div>
                 </div>
@@ -3729,10 +3826,6 @@
                             Parcelas por Viajante
                         </h3>
                         <div class="installments-overview-actions">
-                            <button class="modern-btn modern-btn-secondary modern-btn-sm" onclick="renderInstallmentsSchedule(true)">
-                                <span class="material-symbols-outlined">refresh</span>
-                                Atualizar
-                            </button>
                             <button id="toggle-installments-group-btn" class="modern-btn modern-btn-ghost modern-btn-sm" onclick="toggleInstallmentsCategoryGrouping()">
                                 <span class="material-symbols-outlined">category</span>
                                 Agrupar por categoria
@@ -5014,6 +5107,7 @@
         // ===== DADOS GLOBAIS =====
         let trips = []; // Array de todas as viagens
         let currentTripId = null; // ID da viagem atual
+        let isRealtimeListenerAttached = false;
 
         // Inicializar aplicação diretamente (sem autenticação)
         loadTravelData();
@@ -5123,43 +5217,49 @@
             }
         }
 
-        async function loadTravelData() {
-            console.log('📂 Carregando dados de:', DATABASE_PATH);
+        function loadTravelData() {
+            if (isRealtimeListenerAttached) {
+                return;
+            }
 
-            try {
-                const snapshot = await database.ref(DATABASE_PATH).once('value');
-                
+            console.log('📡 Iniciando sincronização em tempo real:', DATABASE_PATH);
+            const ref = database.ref(DATABASE_PATH);
+
+            const handleSnapshot = snapshot => {
+                console.log('🔁 Atualização recebida do Firebase');
+
                 if (snapshot.exists()) {
                     const savedData = snapshot.val();
-                    console.log('✅ Dados encontrados:', savedData);
-                    
                     trips = (savedData.trips || []).map(normalizeTripData);
-                    currentTripId = savedData.currentTripId || null;
-                    
-                    console.log(`📋 ${trips.length} viagens carregadas`);
-                    
-                    // Se há viagens mas nenhuma selecionada, selecionar a primeira
-                    if (trips.length > 0 && !currentTripId) {
-                        currentTripId = trips[0].id;
-                        console.log('🎯 Selecionando primeira viagem:', trips[0].name);
-                        await saveTravelData();
+                    currentTripId = savedData.currentTripId || (trips.length > 0 ? trips[0].id : null);
+
+                    if (trips.length > 0 && !savedData.currentTripId && currentTripId) {
+                        console.log('🎯 Definindo viagem ativa padrão:', currentTripId);
+                        saveTravelData();
                     }
                 } else {
                     trips = [];
                     currentTripId = null;
                     console.log('ℹ️ Nenhum dado encontrado (primeira vez)');
                 }
-            } catch (error) {
-                console.error('❌ Erro ao carregar:', error);
-                alert('ERRO AO CARREGAR:\n' + error.message + '\n\nVerifique as regras do Firebase Database:\n\n{\n  "rules": {\n    "viagens-app": {\n      ".read": true,\n      ".write": true\n    }\n  }\n}');
-                trips = [];
-                currentTripId = null;
-            }
-            
-            // Renderizar dados
-            updateTripSelector();
-            renderAllData();
-            initializeTabs();
+
+                updateTripSelector();
+                renderAllData();
+            };
+
+            const handleError = error => {
+                console.error('❌ Erro no listener em tempo real:', error);
+                alert('ERRO AO CARREGAR EM TEMPO REAL:\n' + error.message + '\n\nVerifique as regras do Firebase Database:\n\n{\n  "rules": {\n    "viagens-app": {\n      ".read": true,\n      ".write": true\n    }\n  }\n}');
+            };
+
+            ref.on('value', handleSnapshot, handleError);
+
+            window.addEventListener('beforeunload', () => {
+                ref.off('value', handleSnapshot);
+                isRealtimeListenerAttached = false;
+            }, { once: true });
+
+            isRealtimeListenerAttached = true;
         }
 
         // Renderizar todos os dados
@@ -7254,6 +7354,28 @@
             return { balances, transactions, paymentDetails };
         }
 
+        function buildDebtPairs(paymentDetails = {}) {
+            const pairs = [];
+            Object.entries(paymentDetails).forEach(([key, details]) => {
+                if (!Array.isArray(details) || !details.length) return;
+                const [debtor, creditor] = key.split('__');
+                if (!debtor || !creditor) return;
+                const total = details.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
+                if (total <= 0.01) return;
+                pairs.push({
+                    debtor,
+                    creditor,
+                    total
+                });
+            });
+            return pairs.sort((a, b) => {
+                if (a.debtor.toLowerCase() === b.debtor.toLowerCase()) {
+                    return a.creditor.localeCompare(b.creditor, 'pt-BR', { sensitivity: 'base' });
+                }
+                return a.debtor.localeCompare(b.debtor, 'pt-BR', { sensitivity: 'base' });
+            });
+        }
+
         function minimizeTransactions(balances) {
             // Separar credores e devedores
             const creditors = []; // Quem deve receber
@@ -7308,49 +7430,85 @@
                 return;
             }
             
-            const { balances, transactions, paymentDetails } = calculateBalances();
-            paymentDetailsCache = paymentDetails;
+            const { paymentDetails } = calculateBalances();
+            const debtPairs = buildDebtPairs(paymentDetails);
             
-            if (transactions.length === 0) {
+            if (!debtPairs.length) {
                 section.style.display = 'none';
                 paymentDetailsCache = {};
                 return;
             }
             
+            const totals = debtPairs.map(pair => pair.total);
+            const sortedTotals = [...totals].sort((a, b) => a - b);
+            const distinctTotals = [...new Set(sortedTotals)];
+
+            const lowIndex = Math.floor(sortedTotals.length / 3);
+            const highIndex = Math.floor((sortedTotals.length * 2) / 3);
+            const yellowThreshold = sortedTotals[lowIndex] ?? sortedTotals[0];
+            const redThreshold = sortedTotals[highIndex] ?? sortedTotals[sortedTotals.length - 1];
+            const minValue = sortedTotals[0] ?? 0;
+            const maxValue = sortedTotals[sortedTotals.length - 1] ?? 0;
+
+            function getAmountClass(value) {
+                if (distinctTotals.length === 1) {
+                    return 'amount-green';
+                }
+
+                if (distinctTotals.length === 2) {
+                    return value === maxValue ? 'amount-red' : 'amount-green';
+                }
+
+                if (redThreshold !== yellowThreshold) {
+                    if (value >= redThreshold) return 'amount-red';
+                    if (value >= yellowThreshold) return 'amount-yellow';
+                    return 'amount-green';
+                }
+
+                const span = Math.max(1, maxValue - minValue);
+                const ratio = (value - minValue) / span;
+                if (ratio >= 0.66) return 'amount-red';
+                if (ratio >= 0.33) return 'amount-yellow';
+                return 'amount-green';
+            }
+
+            paymentDetailsCache = paymentDetails;
             section.style.display = 'block';
             
-            container.innerHTML = transactions.map(t => {
-                const safeFrom = escapeJsString(t.from);
-                const safeTo = escapeJsString(t.to);
+            container.innerHTML = debtPairs.map(pair => {
+                const safeFrom = escapeJsString(pair.debtor);
+                const safeTo = escapeJsString(pair.creditor);
+                const amountClass = getAmountClass(pair.total);
                 return `
-                <div class="payment-item">
-                    <div class="payment-info">
-                        <div class="payment-from">
-                            <div class="traveler-avatar">${getInitials(t.from)}</div>
-                            <span>${t.from}</span>
+                <div class="payment-card">
+                    <div class="payment-card-line">
+                        <div>
+                            <span class="payment-card-label">Devedor</span>
+                            <div class="payment-card-person">
+                                <div class="traveler-avatar">${getInitials(pair.debtor)}</div>
+                                <span>${pair.debtor}</span>
+                            </div>
                         </div>
-                        <span class="material-symbols-outlined" style="color: var(--gray-400);">arrow_forward</span>
-                        <div class="payment-to">
-                            <div class="traveler-avatar">${getInitials(t.to)}</div>
-                            <span>${t.to}</span>
+                        <span class="material-symbols-outlined" style="color: var(--gray-400);">trending_flat</span>
+                        <div style="text-align: right;">
+                            <span class="payment-card-label">Recebedor</span>
+                            <div class="payment-card-person" style="justify-content: flex-end;">
+                                <span>${pair.creditor}</span>
+                                <div class="traveler-avatar">${getInitials(pair.creditor)}</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="payment-meta">
-                        <div class="payment-amount">${formatCurrency(t.amount)}</div>
-                        <span class="payment-status pending">Pendente</span>
-                        <button class="payment-detail-link" onclick="openPaymentDetail('${safeFrom}', '${safeTo}', ${t.amount})">
-                            Detalhar
-                            <span class="material-symbols-outlined" style="font-size: 1rem;">chevron_right</span>
-                        </button>
+                    <div class="payment-card-amount ${amountClass}">
+                        <span>Valor devido</span>
+                        <strong>${formatCurrency(pair.total)}</strong>
                     </div>
+                    <button class="payment-card-detail" onclick="openPaymentDetail('${safeFrom}', '${safeTo}', ${pair.total})">
+                        Ver detalhes
+                        <span class="material-symbols-outlined" style="font-size: 1rem;">chevron_right</span>
+                    </button>
                 </div>
                 `;
             }).join('');
-        }
-
-        function recalculateBalances() {
-            renderPaymentTracking();
-            showNotification('🔄 Saldos recalculados', 'success');
         }
 
         function saveNewTrip(event) {
