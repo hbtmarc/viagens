@@ -14,6 +14,42 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         [x-cloak] { display: none!important; }
+        
+        /* Toast Animation */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        .toast-enter {
+            animation: slideInRight 0.3s ease-out;
+        }
+        
+        .toast-exit {
+            animation: slideOutRight 0.3s ease-out;
+        }
+        
+        /* Smooth transitions */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
     </style>
 
     <script>
@@ -36,53 +72,57 @@
 </head>
 <body class="bg-slate-50 text-slate-800" x-data="travelApp()">
 
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center gap-3">
-                    <div class="bg-brand-600 text-white p-2 rounded-lg">
-                        <i class="ph ph-airplane-tilt text-xl"></i>
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-14 sm:h-16">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="bg-brand-600 text-white p-1.5 sm:p-2 rounded-lg">
+                        <i class="ph ph-airplane-tilt text-lg sm:text-xl"></i>
                     </div>
                     <div>
-                        <h1 class="font-bold text-xl tracking-tight text-slate-900">TravelSync</h1>
-                        <p class="text-xs text-slate-500 font-medium">Projeto Angra 2025</p>
+                        <h1 class="font-bold text-base sm:text-xl tracking-tight text-slate-900">TravelSync</h1>
+                        <p class="text-[10px] sm:text-xs text-slate-500 font-medium">Projeto Angra 2025</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 sm:gap-4">
                     <div class="hidden md:flex -space-x-2 overflow-hidden">
                         <template x-for="member in members" :key="member.id">
                             <div class="relative inline-block h-8 w-8 rounded-full ring-2 ring-white bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600" :title="member.name" x-text="member.initials"></div>
                         </template>
                     </div>
-                    <button @click="openAddModal" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 shadow-sm">
-                        <i class="ph ph-plus-bold"></i> <span class="hidden sm:inline">Nova Despesa</span>
+                    <button @click="openAddModal" class="bg-brand-600 hover:bg-brand-700 active:scale-95 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-2 shadow-sm">
+                        <i class="ph ph-plus-bold text-sm sm:text-base"></i>
+                        <span class="hidden sm:inline">Nova Despesa</span>
+                        <span class="sm:hidden">Nova</span>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 pb-20 sm:pb-8">
         
         <!-- Tabs Navigation -->
-        <div class="flex justify-center mb-8">
-            <div class="bg-slate-100 p-1 rounded-xl inline-flex shadow-inner">
+        <div class="flex justify-center mb-6 sm:mb-8">
+            <div class="bg-slate-100 p-1 rounded-xl inline-flex shadow-inner w-full max-w-md sm:w-auto">
                 <button @click="currentTab = 'traveler'" 
                         :class="currentTab === 'traveler' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'"
-                        class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200">
-                    Visão por Viajante
+                        class="flex-1 sm:flex-none px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95">
+                    <i class="ph ph-user mr-1 sm:mr-0"></i>
+                    <span class="sm:ml-1">Viajante</span>
                 </button>
                 <button @click="currentTab = 'general'" 
                         :class="currentTab === 'general' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'"
-                        class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200">
-                    Visão Geral
+                        class="flex-1 sm:flex-none px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95">
+                    <i class="ph ph-chart-line mr-1 sm:mr-0"></i>
+                    <span class="sm:ml-1">Geral</span>
                 </button>
             </div>
         </div>
 
         <!-- General View -->
         <div x-show="currentTab === 'general'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-8">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-slate-500 mb-1">Custo Total da Viagem</p>
@@ -116,28 +156,73 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             <div class="lg:col-span-2 space-y-6">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
                         <i class="ph ph-receipt"></i> Histórico de Despesas
                     </h3>
-                    <div class="flex items-center gap-3">
-                        <div class="flex items-center bg-white border border-slate-200 rounded-lg p-1 shadow-sm">
-                            <button @click="prevMonth()" class="p-1 hover:bg-slate-100 rounded-md text-slate-500 transition">
-                                <i class="ph ph-caret-left text-lg"></i>
+                    <div class="flex items-center gap-2 sm:gap-3">
+                        <div class="flex items-center bg-white border border-slate-200 rounded-lg p-1 shadow-sm flex-1 sm:flex-none">
+                            <button @click="prevMonth()" class="p-1 hover:bg-slate-100 active:bg-slate-200 rounded-md text-slate-500 transition">
+                                <i class="ph ph-caret-left text-base sm:text-lg"></i>
                             </button>
-                            <span class="px-3 text-sm font-medium text-slate-700 capitalize min-w-[140px] text-center" x-text="displayMonth"></span>
-                            <button @click="nextMonth()" class="p-1 hover:bg-slate-100 rounded-md text-slate-500 transition">
-                                <i class="ph ph-caret-right text-lg"></i>
+                            <span class="flex-1 sm:flex-none px-2 sm:px-3 text-xs sm:text-sm font-medium text-slate-700 capitalize min-w-[100px] sm:min-w-[140px] text-center" x-text="displayMonth"></span>
+                            <button @click="nextMonth()" class="p-1 hover:bg-slate-100 active:bg-slate-200 rounded-md text-slate-500 transition">
+                                <i class="ph ph-caret-right text-base sm:text-lg"></i>
                             </button>
                         </div>
-                        <button @click="goToCurrentMonth()" class="text-xs font-medium text-brand-600 hover:text-brand-700 hover:bg-brand-50 px-3 py-1.5 rounded-lg transition border border-brand-200">
-                            Mês Atual
+                        <button @click="goToCurrentMonth()" class="text-[10px] sm:text-xs font-medium text-brand-600 hover:text-brand-700 active:bg-brand-100 hover:bg-brand-50 px-2 sm:px-3 py-1.5 rounded-lg transition border border-brand-200 whitespace-nowrap">
+                            Hoje
                         </button>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="overflow-x-auto">
+                    <!-- Mobile Card View -->
+                    <div class="md:hidden divide-y divide-slate-100">
+                        <template x-for="expense in filteredExpenses" :key="expense.id">
+                            <div class="p-3 hover:bg-slate-50 transition active:bg-slate-100">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex-1 pr-3">
+                                        <div class="font-medium text-sm text-slate-900" x-text="expense.description"></div>
+                                        <div class="text-xs text-slate-400 mt-0.5" x-text="expense.date"></div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-sm text-slate-900" x-text="formatCurrency(expense.amount)"></div>
+                                        <span x-show="expense.installments > 1" class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-purple-100 text-purple-800 mt-1">
+                                            <i class="ph ph-credit-card text-[10px]"></i>
+                                            <span x-text="expense.installments + 'x'"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-5 h-5 rounded-full bg-slate-200 flex items-center justify-center text-[8px] font-bold text-slate-600" x-text="getMember(expense.payerId).initials"></span>
+                                        <span class="text-xs text-slate-600" x-text="getMember(expense.payerId).name"></span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="openEditModal(expense)" class="text-slate-400 hover:text-brand-600 active:text-brand-700 transition p-1">
+                                            <i class="ph ph-pencil-simple text-base"></i>
+                                        </button>
+                                        <button @click="deleteExpense(expense.id)" class="text-slate-400 hover:text-red-500 active:text-red-600 transition p-1">
+                                            <i class="ph ph-trash text-base"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex -space-x-1.5 mt-2">
+                                    <template x-for="pid in (expense.participants || members.map(m=>m.id))">
+                                        <div class="relative inline-block h-5 w-5 rounded-full ring-2 ring-white bg-slate-100 flex items-center justify-center text-[8px] font-bold text-slate-500" :title="getMember(pid).name" x-text="getMember(pid).initials"></div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                        <div x-show="expenses.length === 0" class="p-8 text-center text-slate-500">
+                            <i class="ph ph-receipt-x text-3xl mb-2 opacity-50"></i>
+                            <p class="text-xs">Nenhuma despesa registrada</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Desktop Table View -->
+                    <div class="hidden md:block overflow-x-auto">
                         <table class="w-full text-left text-sm">
                             <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase text-xs">
                                 <tr>
@@ -204,15 +289,15 @@
                                 </template>
                             </tbody>
                         </table>
-                    </div>
-                    <div x-show="expenses.length === 0" class="p-12 text-center text-slate-500">
-                        <i class="ph ph-receipt-x text-4xl mb-3 opacity-50"></i>
-                        <p>Nenhuma despesa registrada ainda.</p>
+                        <div x-show="expenses.length === 0" class="p-12 text-center text-slate-500">
+                            <i class="ph ph-receipt-x text-4xl mb-3 opacity-50"></i>
+                            <p>Nenhuma despesa registrada ainda.</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="space-y-6">
+            <div class="space-y-4 sm:space-y-6">
                 
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                     <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
@@ -337,18 +422,18 @@
         <div x-show="currentTab === 'traveler'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
             
             <!-- Traveler Selector -->
-            <div class="mb-8">
-                <p class="text-center text-slate-500 text-sm mb-4 font-medium">Selecione o Viajante</p>
-                <div class="flex flex-wrap justify-center gap-4">
+            <div class="mb-6 sm:mb-8">
+                <p class="text-center text-slate-500 text-xs sm:text-sm mb-3 sm:mb-4 font-medium">Selecione o Viajante</p>
+                <div class="grid grid-cols-4 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-4">
                     <template x-for="member in members" :key="member.id">
                         <button @click="viewMemberId = member.id"
-                                class="flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-200 w-24"
-                                :class="viewMemberId === member.id ? 'bg-brand-50 border-2 border-brand-500 shadow-sm transform scale-105' : 'bg-white border border-slate-200 hover:border-brand-200 hover:bg-slate-50'">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold transition-colors"
+                                class="flex flex-col items-center gap-1.5 sm:gap-2 p-2 sm:p-4 rounded-xl transition-all duration-200 active:scale-95"
+                                :class="viewMemberId === member.id ? 'bg-brand-50 border-2 border-brand-500 shadow-md transform scale-105' : 'bg-white border border-slate-200 hover:border-brand-200 hover:bg-slate-50 shadow-sm'">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-base sm:text-lg font-bold transition-colors"
                                  :class="viewMemberId === member.id ? 'bg-brand-100 text-brand-700' : 'bg-slate-100 text-slate-500'">
                                 <span x-text="member.initials"></span>
                             </div>
-                            <span class="text-sm font-medium truncate w-full text-center"
+                            <span class="text-[10px] sm:text-sm font-medium truncate w-full text-center"
                                   :class="viewMemberId === member.id ? 'text-brand-700' : 'text-slate-600'"
                                   x-text="member.name"></span>
                         </button>
@@ -357,7 +442,7 @@
             </div>
 
             <!-- Traveler Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-8">
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                     <p class="text-sm font-medium text-slate-500 mb-1">Minha Parte (Consumo)</p>
                     <h2 class="text-3xl font-bold text-slate-900" x-text="formatCurrency(calculateBalances().find(m => m.id === viewMemberId)?.shouldPay || 0)"></h2>
@@ -383,26 +468,64 @@
 
             <!-- Detailed Expenses List -->
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-                        <i class="ph ph-list-dashes"></i> Detalhamento da Fatura
-                    </h3>
-                    <div class="flex items-center gap-3">
-                        <div class="flex items-center bg-white border border-slate-200 rounded-lg p-1 shadow-sm">
-                            <button @click="prevMonth()" class="p-1 hover:bg-slate-100 rounded-md text-slate-500 transition">
-                                <i class="ph ph-caret-left text-lg"></i>
+                <div class="p-3 sm:p-6 border-b border-slate-100 flex flex-col gap-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
+                            <i class="ph ph-list-dashes"></i> Detalhamento
+                        </h3>
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg p-1 shadow-sm flex-1">
+                            <button @click="prevMonth()" class="p-1 hover:bg-slate-100 active:bg-slate-200 rounded-md text-slate-500 transition">
+                                <i class="ph ph-caret-left text-base sm:text-lg"></i>
                             </button>
-                            <span class="px-3 text-sm font-medium text-slate-700 capitalize min-w-[140px] text-center" x-text="displayMonth"></span>
-                            <button @click="nextMonth()" class="p-1 hover:bg-slate-100 rounded-md text-slate-500 transition">
-                                <i class="ph ph-caret-right text-lg"></i>
+                            <span class="flex-1 text-xs sm:text-sm font-medium text-slate-700 capitalize text-center" x-text="displayMonth"></span>
+                            <button @click="nextMonth()" class="p-1 hover:bg-slate-100 active:bg-slate-200 rounded-md text-slate-500 transition">
+                                <i class="ph ph-caret-right text-base sm:text-lg"></i>
                             </button>
                         </div>
-                        <button @click="goToCurrentMonth()" class="text-xs font-medium text-brand-600 hover:text-brand-700 hover:bg-brand-50 px-3 py-1.5 rounded-lg transition border border-brand-200">
-                            Mês Atual
+                        <button @click="goToCurrentMonth()" class="text-[10px] sm:text-xs font-medium text-brand-600 hover:text-brand-700 active:bg-brand-100 hover:bg-brand-50 px-2 sm:px-3 py-1.5 rounded-lg transition border border-brand-200 whitespace-nowrap">
+                            Hoje
                         </button>
                     </div>
                 </div>
-                <div class="overflow-x-auto">
+                
+                <!-- Mobile Card View -->
+                <div class="md:hidden divide-y divide-slate-100">
+                    <template x-for="expense in filteredExpenses.filter(e => (e.participants || members.map(m=>m.id)).includes(viewMemberId))" :key="expense.id">
+                        <div class="p-3 hover:bg-slate-50 transition active:bg-slate-100">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex-1">
+                                    <div class="font-medium text-sm text-slate-900" x-text="expense.description"></div>
+                                    <div class="text-xs text-slate-400 mt-0.5" x-text="expense.date.split('-').reverse().slice(0,2).join('/')"></div>
+                                </div>
+                                <div class="text-right ml-2">
+                                    <div class="font-bold text-sm text-emerald-600" x-text="formatCurrency(parseFloat(expense.amount) / (expense.participants || members.map(m=>m.id)).length)"></div>
+                                    <div class="text-[10px] text-slate-400">minha parte</div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-slate-100">
+                                <span class="text-xs text-slate-500">Total</span>
+                                <span class="text-xs text-slate-600 font-medium" x-text="formatCurrency(expense.amount)"></span>
+                            </div>
+                        </div>
+                    </template>
+                    <div x-show="filteredExpenses.filter(e => (e.participants || members.map(m=>m.id)).includes(viewMemberId)).length === 0" class="p-8 text-center text-slate-500">
+                        <i class="ph ph-smiley text-3xl mb-2 opacity-50"></i>
+                        <p class="text-xs">Nenhuma despesa neste mês</p>
+                    </div>
+                    
+                    <!-- Mobile Total -->
+                    <div class="bg-slate-50 p-3 font-bold">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-slate-500 uppercase">Total do Mês</span>
+                            <span class="text-base text-emerald-600" x-text="formatCurrency(calculateBalances().find(m => m.id === viewMemberId)?.shouldPay || 0)"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Desktop Table View -->
+                <div class="hidden md:block overflow-x-auto">
                     <table class="w-full text-left text-sm">
                         <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase text-xs">
                             <tr>
@@ -440,6 +563,35 @@
 
         </div>
     </main>
+
+    <!-- Toast Container -->
+    <div class="fixed top-16 sm:top-20 right-3 sm:right-6 z-50 space-y-2" style="max-width: calc(100vw - 1.5rem);">
+        <template x-for="toast in toasts" :key="toast.id">
+            <div class="toast-enter bg-white rounded-lg shadow-lg border-l-4 p-3 sm:p-4 min-w-[280px] max-w-md"
+                 :class="{
+                     'border-emerald-500': toast.type === 'success',
+                     'border-red-500': toast.type === 'error',
+                     'border-blue-500': toast.type === 'info'
+                 }">
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0">
+                        <i class="ph-fill text-xl"
+                           :class="{
+                               'ph-check-circle text-emerald-500': toast.type === 'success',
+                               'ph-x-circle text-red-500': toast.type === 'error',
+                               'ph-info text-blue-500': toast.type === 'info'
+                           }"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-slate-900" x-text="toast.message"></p>
+                    </div>
+                    <button @click="removeToast(toast.id)" class="flex-shrink-0 text-slate-400 hover:text-slate-600">
+                        <i class="ph ph-x text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </template>
+    </div>
 
     <div x-show="showAddModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -540,6 +692,7 @@
             editingId: null,
             currentTab: 'traveler',
             viewMemberId: '1',
+            toasts: [],
             
             members: [
                 { id: '1', name: 'Marcelino', initials: 'MA' },
@@ -727,10 +880,11 @@
                     .then(() => {
                         this.showAddModal = false;
                         this.resetForm();
+                        this.showToast(this.editingId ? 'Despesa atualizada com sucesso!' : 'Despesa adicionada com sucesso!', 'success');
                     })
                     .catch((error) => {
                         console.error("Erro ao salvar: ", error);
-                        alert("Erro ao salvar despesa.");
+                        this.showToast('Erro ao salvar despesa. Tente novamente.', 'error');
                     });
             },
 
@@ -757,9 +911,12 @@
             deleteExpense(id) {
                 if(confirm('Tem certeza que deseja apagar esta despesa? (Isso apagará todas as parcelas)')) {
                     remove(ref(db, 'expenses/' + id))
+                        .then(() => {
+                            this.showToast('Despesa removida com sucesso!', 'success');
+                        })
                         .catch((error) => {
                             console.error("Erro ao apagar: ", error);
-                            alert("Erro ao apagar despesa.");
+                            this.showToast('Erro ao apagar despesa. Tente novamente.', 'error');
                         });
                 }
             },
@@ -777,6 +934,16 @@
 
             formatCurrency(value) {
                 return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+            },
+
+            showToast(message, type = 'success') {
+                const id = Date.now();
+                this.toasts.push({ id, message, type });
+                setTimeout(() => this.removeToast(id), 4000);
+            },
+
+            removeToast(id) {
+                this.toasts = this.toasts.filter(t => t.id !== id);
             },
 
             calculateBalances() {
