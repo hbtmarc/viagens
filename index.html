@@ -563,7 +563,7 @@
                     </p>
                 </div>
                 <div class="mb-4 flex justify-center gap-2">
-                    <button @click="if(selectedMemberIds.length >= 2) { selectedMemberIds = []; viewMemberId = null; } else { selectedMemberIds = currentTrip.members.map(m => m.id); viewMemberId = null; }" 
+                    <button @click="if(selectedMemberIds.length >= 2) { selectedMemberIds = []; viewMemberId = null; } else { selectedMemberIds = currentTrip.members.slice(0, 2).map(m => m.id); viewMemberId = null; }" 
                             :class="selectedMemberIds.length >= 2 ? 'bg-brand-600 text-white shadow-glow' : 'bg-white text-slate-600 border border-slate-300'"
                             class="px-6 py-2 rounded-lg text-xs font-semibold transition active:scale-95 hover:shadow-md flex items-center gap-2">
                         <i class="ph-fill ph-users-three"></i>
