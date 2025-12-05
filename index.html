@@ -64,7 +64,25 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Tabs Navigation -->
+        <div class="flex justify-center mb-8">
+            <div class="bg-slate-100 p-1 rounded-xl inline-flex shadow-inner">
+                <button @click="currentTab = 'traveler'" 
+                        :class="currentTab === 'traveler' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'"
+                        class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200">
+                    Visão por Viajante
+                </button>
+                <button @click="currentTab = 'general'" 
+                        :class="currentTab === 'general' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'"
+                        class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200">
+                    Visão Geral
+                </button>
+            </div>
+        </div>
+
+        <!-- General View -->
+        <div x-show="currentTab === 'general'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-slate-500 mb-1">Custo Total da Viagem</p>
@@ -313,6 +331,101 @@
 
             </div>
         </div>
+        </div> <!-- End General View -->
+
+        <!-- Traveler View -->
+        <div x-show="currentTab === 'traveler'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
+            
+            <!-- Traveler Selector -->
+            <div class="mb-8">
+                <p class="text-center text-slate-500 text-sm mb-4 font-medium">Selecione o Viajante</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <template x-for="member in members" :key="member.id">
+                        <button @click="viewMemberId = member.id"
+                                class="flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-200 w-24"
+                                :class="viewMemberId === member.id ? 'bg-brand-50 border-2 border-brand-500 shadow-sm transform scale-105' : 'bg-white border border-slate-200 hover:border-brand-200 hover:bg-slate-50'">
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold transition-colors"
+                                 :class="viewMemberId === member.id ? 'bg-brand-100 text-brand-700' : 'bg-slate-100 text-slate-500'">
+                                <span x-text="member.initials"></span>
+                            </div>
+                            <span class="text-sm font-medium truncate w-full text-center"
+                                  :class="viewMemberId === member.id ? 'text-brand-700' : 'text-slate-600'"
+                                  x-text="member.name"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Traveler Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <p class="text-sm font-medium text-slate-500 mb-1">Minha Parte (Consumo)</p>
+                    <h2 class="text-3xl font-bold text-slate-900" x-text="formatCurrency(calculateBalances().find(m => m.id === viewMemberId)?.shouldPay || 0)"></h2>
+                    <p class="text-xs text-slate-400 mt-1">Valor das despesas que participei</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <p class="text-sm font-medium text-slate-500 mb-1">Eu Paguei</p>
+                    <h2 class="text-3xl font-bold text-emerald-600" x-text="formatCurrency(calculateBalances().find(m => m.id === viewMemberId)?.paid || 0)"></h2>
+                    <p class="text-xs text-slate-400 mt-1">Valor total desembolsado</p>
+                </div>
+
+                <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
+                    <div class="relative z-10">
+                        <p class="text-sm font-medium text-slate-300 mb-1">Meu Saldo</p>
+                        <h2 class="text-3xl font-bold" 
+                            :class="(calculateBalances().find(m => m.id === viewMemberId)?.balance || 0) >= 0 ? 'text-emerald-400' : 'text-red-400'"
+                            x-text="formatCurrency(calculateBalances().find(m => m.id === viewMemberId)?.balance || 0)"></h2>
+                        <p class="text-xs text-slate-400 mt-1" x-text="(calculateBalances().find(m => m.id === viewMemberId)?.balance || 0) >= 0 ? 'A receber' : 'A pagar'"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Expenses List -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <i class="ph ph-list-dashes"></i> Detalhamento da Fatura
+                    </h3>
+                    <span class="text-sm text-slate-500" x-text="displayMonth"></span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase text-xs">
+                            <tr>
+                                <th class="px-6 py-4 font-semibold">Data</th>
+                                <th class="px-6 py-4 font-semibold">Despesa</th>
+                                <th class="px-6 py-4 font-semibold">Valor Total</th>
+                                <th class="px-6 py-4 font-semibold">Minha Parte</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <template x-for="expense in filteredExpenses.filter(e => (e.participants || members.map(m=>m.id)).includes(viewMemberId))" :key="expense.id">
+                                <tr class="hover:bg-slate-50 transition">
+                                    <td class="px-6 py-4 text-slate-500" x-text="expense.date.split('-').reverse().slice(0,2).join('/')"></td>
+                                    <td class="px-6 py-4 font-medium text-slate-900" x-text="expense.description"></td>
+                                    <td class="px-6 py-4 text-slate-500" x-text="formatCurrency(expense.amount)"></td>
+                                    <td class="px-6 py-4 font-bold text-slate-900" x-text="formatCurrency(parseFloat(expense.amount) / (expense.participants || members.map(m=>m.id)).length)"></td>
+                                </tr>
+                            </template>
+                            <tr x-show="filteredExpenses.filter(e => (e.participants || members.map(m=>m.id)).includes(viewMemberId)).length === 0">
+                                <td colspan="4" class="px-6 py-12 text-center text-slate-500">
+                                    <i class="ph ph-smiley text-4xl mb-3 opacity-50"></i>
+                                    <p>Você não participou de nenhuma despesa neste mês.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="bg-slate-50 font-bold text-slate-900 border-t border-slate-200">
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 text-right uppercase text-xs text-slate-500">Total do Mês</td>
+                                <td class="px-6 py-4 text-emerald-600" x-text="formatCurrency(calculateBalances().find(m => m.id === viewMemberId)?.shouldPay || 0)"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+        </div>
     </main>
 
     <div x-show="showAddModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -412,6 +525,8 @@
         Alpine.data('travelApp', () => ({
             showAddModal: false,
             editingId: null,
+            currentTab: 'traveler',
+            viewMemberId: '1',
             
             members: [
                 { id: '1', name: 'Marcelino', initials: 'MA' },
