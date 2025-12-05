@@ -12,7 +12,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { 
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom, #f8fafc 0%, #e2e8f0 100%);
+        }
         [x-cloak] { display: none!important; }
         
         /* Toast Animation */
@@ -38,6 +41,16 @@
             }
         }
         
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(20, 184, 166, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(20, 184, 166, 0.6); }
+        }
+        
         .toast-enter {
             animation: slideInRight 0.3s ease-out;
         }
@@ -46,9 +59,56 @@
             animation: slideOutRight 0.3s ease-out;
         }
         
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
         /* Smooth transitions */
         * {
             -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #14b8a6, #0d9488);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #0d9488, #0f766e);
         }
     </style>
 
@@ -58,12 +118,40 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            900: '#0c4a6e',
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            200: '#99f6e4',
+                            300: '#5eead4',
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        accent: {
+                            50: '#fef3f2',
+                            100: '#fee5e2',
+                            200: '#fececa',
+                            300: '#fdaca5',
+                            400: '#fb7c72',
+                            500: '#f35b4f',
+                            600: '#e03f34',
+                            700: '#bc2f25',
+                            800: '#9b2b23',
+                            900: '#802a24',
                         }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'gradient-ocean': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        'gradient-sunset': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                        'gradient-beach': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'glow': '0 0 20px rgba(20, 184, 166, 0.4)',
+                        'glow-accent': '0 0 20px rgba(243, 91, 79, 0.4)',
                     }
                 }
             }
@@ -72,26 +160,29 @@
 </head>
 <body class="bg-slate-50 text-slate-800" x-data="travelApp()">
 
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <nav class="glass sticky top-0 z-30 shadow-soft border-b border-white/20">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="flex justify-between h-14 sm:h-16">
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <div class="bg-brand-600 text-white p-1.5 sm:p-2 rounded-lg">
-                        <i class="ph ph-airplane-tilt text-lg sm:text-xl"></i>
+                    <div class="bg-gradient-to-br from-brand-400 to-brand-600 text-white p-1.5 sm:p-2 rounded-xl shadow-glow">
+                        <i class="ph-fill ph-airplane-takeoff text-lg sm:text-xl"></i>
                     </div>
                     <div>
-                        <h1 class="font-bold text-base sm:text-xl tracking-tight text-slate-900">TravelSync</h1>
-                        <p class="text-[10px] sm:text-xs text-slate-500 font-medium">Projeto Angra 2025</p>
+                        <h1 class="font-bold text-base sm:text-xl tracking-tight gradient-text">TravelSync</h1>
+                        <p class="text-[10px] sm:text-xs text-brand-600 font-semibold flex items-center gap-1">
+                            <i class="ph-fill ph-map-pin text-[10px]"></i>
+                            Angra 2025
+                        </p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2 sm:gap-4">
                     <div class="hidden md:flex -space-x-2 overflow-hidden">
                         <template x-for="member in members" :key="member.id">
-                            <div class="relative inline-block h-8 w-8 rounded-full ring-2 ring-white bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600" :title="member.name" x-text="member.initials"></div>
+                            <div class="relative inline-block h-8 w-8 rounded-full ring-2 ring-white bg-gradient-to-br from-brand-200 to-brand-300 flex items-center justify-center text-xs font-bold text-brand-800 shadow-sm" :title="member.name" x-text="member.initials"></div>
                         </template>
                     </div>
-                    <button @click="openAddModal" class="bg-brand-600 hover:bg-brand-700 active:scale-95 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-2 shadow-sm">
-                        <i class="ph ph-plus-bold text-sm sm:text-base"></i>
+                    <button @click="openAddModal" class="bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 active:scale-95 text-white px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 shadow-glow hover:shadow-lg">
+                        <i class="ph-bold ph-plus-circle text-sm sm:text-base"></i>
                         <span class="hidden sm:inline">Nova Despesa</span>
                         <span class="sm:hidden">Nova</span>
                     </button>
@@ -104,54 +195,39 @@
         
         <!-- Tabs Navigation -->
         <div class="flex justify-center mb-6 sm:mb-8">
-            <div class="bg-slate-100 p-1 rounded-xl inline-flex shadow-inner w-full max-w-md sm:w-auto">
+            <div class="glass p-1.5 rounded-2xl inline-flex shadow-soft w-full max-w-md sm:w-auto border border-white/40">
                 <button @click="currentTab = 'traveler'" 
-                        :class="currentTab === 'traveler' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'"
-                        class="flex-1 sm:flex-none px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95">
-                    <i class="ph ph-user mr-1 sm:mr-0"></i>
-                    <span class="sm:ml-1">Viajante</span>
+                        :class="currentTab === 'traveler' ? 'bg-gradient-to-r from-brand-500 to-brand-600 text-white shadow-glow' : 'text-slate-600 hover:text-brand-600 hover:bg-white/50'"
+                        class="flex-1 sm:flex-none px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 active:scale-95 flex items-center justify-center gap-1.5">
+                    <i class="ph-fill ph-user-circle text-base sm:text-lg"></i>
+                    <span>Viajante</span>
                 </button>
                 <button @click="currentTab = 'general'" 
-                        :class="currentTab === 'general' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'"
-                        class="flex-1 sm:flex-none px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95">
-                    <i class="ph ph-chart-line mr-1 sm:mr-0"></i>
-                    <span class="sm:ml-1">Geral</span>
+                        :class="currentTab === 'general' ? 'bg-gradient-to-r from-brand-500 to-brand-600 text-white shadow-glow' : 'text-slate-600 hover:text-brand-600 hover:bg-white/50'"
+                        class="flex-1 sm:flex-none px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 active:scale-95 flex items-center justify-center gap-1.5">
+                    <i class="ph-fill ph-chart-line text-base sm:text-lg"></i>
+                    <span>Geral</span>
                 </button>
             </div>
         </div>
 
         <!-- General View -->
         <div x-show="currentTab === 'general'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-8">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-slate-500 mb-1">Custo Total da Viagem</p>
-                    <h2 class="text-3xl font-bold text-slate-900" x-text="formatCurrency(totalCost)"></h2>
-                </div>
-                <div class="h-12 w-12 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600">
-                    <i class="ph ph-currency-dollar text-2xl"></i>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-slate-500 mb-1">Média de Gastos</p>
-                    <h2 class="text-3xl font-bold text-brand-600" x-text="formatCurrency(totalCost / members.length)"></h2>
-                </div>
-                <div class="h-12 w-12 bg-brand-50 rounded-full flex items-center justify-center text-brand-600">
-                    <i class="ph ph-chart-bar text-2xl"></i>
+            <div class="max-w-md mx-auto mb-6 sm:mb-8">
+                <div class="glass p-6 sm:p-8 rounded-2xl shadow-soft border border-white/40 hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-400/10 to-transparent rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="flex items-center justify-center gap-2 mb-3">
+                            <div class="p-3 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl shadow-glow">
+                                <i class="ph-fill ph-piggy-bank text-white text-xl"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm sm:text-base font-semibold text-emerald-700 mb-2">Custo Total da Viagem</p>
+                        <h2 class="text-4xl sm:text-5xl font-bold text-slate-900 mb-2" x-text="formatCurrency(totalCost)"></h2>
+                        <p class="text-xs sm:text-sm text-slate-500">Soma de todas as despesas do grupo</p>
+                    </div>
                 </div>
             </div>
-
-            <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
-                <div class="relative z-10">
-                    <p class="text-sm font-medium text-slate-300 mb-1">Transações Necessárias</p>
-                    <h2 class="text-3xl font-bold" x-text="simplifiedDebts.length"></h2>
-                    <p class="text-xs text-slate-400 mt-1">Para zerar todas as dívidas</p>
-                </div>
-                <i class="ph ph-arrows-left-right absolute right-4 bottom-4 text-6xl text-slate-800 opacity-50"></i>
-            </div>
-        </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
@@ -423,90 +499,100 @@
             
             <!-- Traveler Selector -->
             <div class="mb-6 sm:mb-8">
-                <p class="text-center text-slate-500 text-xs sm:text-sm mb-3 sm:mb-4 font-medium">Selecione o Viajante</p>
+                <div class="text-center mb-4">
+                    <p class="text-brand-600 text-xs sm:text-sm font-semibold flex items-center justify-center gap-2">
+                        <i class="ph-fill ph-users-three text-base"></i>
+                        Selecione o Viajante
+                    </p>
+                </div>
                 <div class="grid grid-cols-4 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-4">
                     <template x-for="member in members" :key="member.id">
                         <button @click="viewMemberId = member.id"
-                                class="flex flex-col items-center gap-1.5 sm:gap-2 p-2 sm:p-4 rounded-xl transition-all duration-200 active:scale-95"
-                                :class="viewMemberId === member.id ? 'bg-brand-50 border-2 border-brand-500 shadow-md transform scale-105' : 'bg-white border border-slate-200 hover:border-brand-200 hover:bg-slate-50 shadow-sm'">
-                            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-base sm:text-lg font-bold transition-colors"
-                                 :class="viewMemberId === member.id ? 'bg-brand-100 text-brand-700' : 'bg-slate-100 text-slate-500'">
+                                class="flex flex-col items-center gap-1.5 sm:gap-2 p-3 sm:p-4 rounded-2xl transition-all duration-300 active:scale-95 relative overflow-hidden"
+                                :class="viewMemberId === member.id ? 'glass-dark shadow-glow transform scale-105 border-2 border-brand-400' : 'glass shadow-soft hover:shadow-md hover:scale-105'">
+                            <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-base sm:text-xl font-bold transition-all duration-300 shadow-sm"
+                                 :class="viewMemberId === member.id ? 'bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-glow' : 'bg-gradient-to-br from-slate-100 to-slate-200 text-slate-600 hover:from-brand-50 hover:to-brand-100 hover:text-brand-700'">
                                 <span x-text="member.initials"></span>
                             </div>
-                            <span class="text-[10px] sm:text-sm font-medium truncate w-full text-center"
-                                  :class="viewMemberId === member.id ? 'text-brand-700' : 'text-slate-600'"
+                            <span class="text-[10px] sm:text-sm font-semibold truncate w-full text-center transition-colors"
+                                  :class="viewMemberId === member.id ? 'text-white' : 'text-slate-700'"
                                   x-text="member.name"></span>
+                            <div x-show="viewMemberId === member.id" class="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-brand-600/20 pointer-events-none"></div>
                         </button>
                     </template>
                 </div>
             </div>
 
             <!-- Traveler Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-8">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                    <p class="text-sm font-medium text-slate-500 mb-1">Minha Parte (Consumo)</p>
-                    <h2 class="text-3xl font-bold text-slate-900" x-text="formatCurrency(calculateBalances().find(m => m.id === viewMemberId)?.shouldPay || 0)"></h2>
-                    <p class="text-xs text-slate-400 mt-1">Valor das despesas que participei</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                    <p class="text-sm font-medium text-slate-500 mb-1">Eu Paguei</p>
-                    <h2 class="text-3xl font-bold text-emerald-600" x-text="formatCurrency(calculateBalances().find(m => m.id === viewMemberId)?.paid || 0)"></h2>
-                    <p class="text-xs text-slate-400 mt-1">Valor total desembolsado</p>
-                </div>
-
-                <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
-                    <div class="relative z-10">
-                        <p class="text-sm font-medium text-slate-300 mb-1">Meu Saldo</p>
-                        <h2 class="text-3xl font-bold" 
-                            :class="(calculateBalances().find(m => m.id === viewMemberId)?.balance || 0) >= 0 ? 'text-emerald-400' : 'text-red-400'"
-                            x-text="formatCurrency(calculateBalances().find(m => m.id === viewMemberId)?.balance || 0)"></h2>
-                        <p class="text-xs text-slate-400 mt-1" x-text="(calculateBalances().find(m => m.id === viewMemberId)?.balance || 0) >= 0 ? 'A receber' : 'A pagar'"></p>
+            <div class="max-w-md mx-auto mb-6 sm:mb-8">
+                <div class="glass p-6 sm:p-8 rounded-2xl shadow-soft border border-white/40 hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-brand-400/10 to-transparent rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="flex items-center justify-center gap-2 mb-3">
+                            <div class="p-3 bg-gradient-to-br from-brand-400 to-brand-600 rounded-xl shadow-glow">
+                                <i class="ph-fill ph-shopping-cart text-white text-xl"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm sm:text-base font-semibold text-brand-700 mb-2">Minha Parte</p>
+                        <h2 class="text-4xl sm:text-5xl font-bold text-slate-900 mb-2" x-text="formatCurrency(calculateBalances().find(m => m.id === viewMemberId)?.shouldPay || 0)"></h2>
+                        <p class="text-xs sm:text-sm text-slate-500">Total das despesas que participei</p>
                     </div>
                 </div>
             </div>
 
             <!-- Detailed Expenses List -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div class="p-3 sm:p-6 border-b border-slate-100 flex flex-col gap-3">
+            <div class="glass rounded-2xl shadow-soft border border-white/40 overflow-hidden">
+                <div class="p-3 sm:p-6 border-b border-white/20 flex flex-col gap-3">
                     <div class="flex justify-between items-center">
                         <h3 class="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
-                            <i class="ph ph-list-dashes"></i> Detalhamento
+                            <div class="p-1.5 bg-gradient-to-br from-brand-400 to-brand-600 rounded-lg">
+                                <i class="ph-fill ph-receipt text-white text-sm"></i>
+                            </div>
+                            Detalhamento
                         </h3>
                     </div>
                     <div class="flex items-center justify-between gap-2">
-                        <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg p-1 shadow-sm flex-1">
-                            <button @click="prevMonth()" class="p-1 hover:bg-slate-100 active:bg-slate-200 rounded-md text-slate-500 transition">
-                                <i class="ph ph-caret-left text-base sm:text-lg"></i>
+                        <div class="flex items-center glass rounded-xl p-1 shadow-sm flex-1 border border-white/40">
+                            <button @click="prevMonth()" class="p-1.5 hover:bg-brand-50 active:bg-brand-100 rounded-lg text-brand-600 transition-all active:scale-95">
+                                <i class="ph-bold ph-caret-left text-base sm:text-lg"></i>
                             </button>
-                            <span class="flex-1 text-xs sm:text-sm font-medium text-slate-700 capitalize text-center" x-text="displayMonth"></span>
-                            <button @click="nextMonth()" class="p-1 hover:bg-slate-100 active:bg-slate-200 rounded-md text-slate-500 transition">
-                                <i class="ph ph-caret-right text-base sm:text-lg"></i>
+                            <span class="flex-1 text-xs sm:text-sm font-semibold text-slate-700 capitalize text-center" x-text="displayMonth"></span>
+                            <button @click="nextMonth()" class="p-1.5 hover:bg-brand-50 active:bg-brand-100 rounded-lg text-brand-600 transition-all active:scale-95">
+                                <i class="ph-bold ph-caret-right text-base sm:text-lg"></i>
                             </button>
                         </div>
-                        <button @click="goToCurrentMonth()" class="text-[10px] sm:text-xs font-medium text-brand-600 hover:text-brand-700 active:bg-brand-100 hover:bg-brand-50 px-2 sm:px-3 py-1.5 rounded-lg transition border border-brand-200 whitespace-nowrap">
-                            Hoje
+                        <button @click="goToCurrentMonth()" class="text-[10px] sm:text-xs font-semibold text-white bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 active:scale-95 px-2 sm:px-3 py-2 rounded-xl transition-all shadow-sm hover:shadow-md whitespace-nowrap">
+                            <i class="ph-bold ph-calendar-check mr-1"></i>Hoje
                         </button>
                     </div>
                 </div>
                 
                 <!-- Mobile Card View -->
-                <div class="md:hidden divide-y divide-slate-100">
+                <div class="md:hidden divide-y divide-white/20">
                     <template x-for="expense in filteredExpenses.filter(e => (e.participants || members.map(m=>m.id)).includes(viewMemberId))" :key="expense.id">
-                        <div class="p-3 hover:bg-slate-50 transition active:bg-slate-100">
+                        <div class="p-3 hover:bg-white/30 transition-all active:bg-white/40 relative">
                             <div class="flex justify-between items-start mb-2">
                                 <div class="flex-1">
-                                    <div class="font-medium text-sm text-slate-900" x-text="expense.description"></div>
-                                    <div class="text-xs text-slate-400 mt-0.5" x-text="expense.date.split('-').reverse().slice(0,2).join('/')"></div>
+                                    <div class="font-semibold text-sm text-slate-900" x-text="expense.description"></div>
+                                    <div class="flex items-center gap-1 mt-1">
+                                        <i class="ph-fill ph-calendar-blank text-brand-500 text-[10px]"></i>
+                                        <span class="text-xs text-slate-500" x-text="expense.date.split('-').reverse().slice(0,2).join('/')"></span>
+                                    </div>
                                 </div>
                                 <div class="text-right ml-2">
-                                    <div class="font-bold text-sm text-emerald-600" x-text="formatCurrency(parseFloat(expense.amount) / (expense.participants || members.map(m=>m.id)).length)"></div>
-                                    <div class="text-[10px] text-slate-400">minha parte</div>
+                                    <div class="flex items-baseline gap-0.5">
+                                        <span class="text-xs text-slate-500">R$</span>
+                                        <div class="font-bold text-base text-brand-600" x-text="formatCurrency(parseFloat(expense.amount) / (expense.participants || members.map(m=>m.id)).length).replace('R$', '').trim()"></div>
+                                    </div>
+                                    <div class="text-[9px] text-slate-400 uppercase tracking-wide">minha parte</div>
                                 </div>
                             </div>
-                            <div class="flex justify-between items-center pt-2 border-t border-slate-100">
-                                <span class="text-xs text-slate-500">Total</span>
-                                <span class="text-xs text-slate-600 font-medium" x-text="formatCurrency(expense.amount)"></span>
+                            <div class="flex justify-between items-center pt-2 border-t border-slate-200">
+                                <span class="text-xs text-slate-500 flex items-center gap-1">
+                                    <i class="ph-fill ph-currency-circle-dollar text-slate-400"></i>
+                                    Total
+                                </span>
+                                <span class="text-xs text-slate-700 font-semibold" x-text="formatCurrency(expense.amount)"></span>
                             </div>
                         </div>
                     </template>
@@ -516,10 +602,13 @@
                     </div>
                     
                     <!-- Mobile Total -->
-                    <div class="bg-slate-50 p-3 font-bold">
+                    <div class="bg-gradient-to-r from-brand-50 to-brand-100 p-4 font-bold border-t-2 border-brand-300">
                         <div class="flex justify-between items-center">
-                            <span class="text-xs text-slate-500 uppercase">Total do Mês</span>
-                            <span class="text-base text-emerald-600" x-text="formatCurrency(calculateBalances().find(m => m.id === viewMemberId)?.shouldPay || 0)"></span>
+                            <span class="text-xs text-brand-700 uppercase font-semibold flex items-center gap-1">
+                                <i class="ph-fill ph-equals text-brand-600"></i>
+                                Total do Mês
+                            </span>
+                            <span class="text-lg text-brand-700" x-text="formatCurrency(calculateBalances().find(m => m.id === viewMemberId)?.shouldPay || 0)"></span>
                         </div>
                     </div>
                 </div>
