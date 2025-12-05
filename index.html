@@ -383,11 +383,24 @@
 
             <!-- Detailed Expenses List -->
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
                     <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
                         <i class="ph ph-list-dashes"></i> Detalhamento da Fatura
                     </h3>
-                    <span class="text-sm text-slate-500" x-text="displayMonth"></span>
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center bg-white border border-slate-200 rounded-lg p-1 shadow-sm">
+                            <button @click="prevMonth()" class="p-1 hover:bg-slate-100 rounded-md text-slate-500 transition">
+                                <i class="ph ph-caret-left text-lg"></i>
+                            </button>
+                            <span class="px-3 text-sm font-medium text-slate-700 capitalize min-w-[140px] text-center" x-text="displayMonth"></span>
+                            <button @click="nextMonth()" class="p-1 hover:bg-slate-100 rounded-md text-slate-500 transition">
+                                <i class="ph ph-caret-right text-lg"></i>
+                            </button>
+                        </div>
+                        <button @click="goToCurrentMonth()" class="text-xs font-medium text-brand-600 hover:text-brand-700 hover:bg-brand-50 px-3 py-1.5 rounded-lg transition border border-brand-200">
+                            Mês Atual
+                        </button>
+                    </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
