@@ -1,28 +1,1879 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timeline</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Nosso Natal — Timeline + Shot List</title>
+  <style>
+    :root {
+      --bg: #f6efe6;
+      --bg-strong: #f2e3d2;
+      --surface: #fffdf7;
+      --surface-2: #f9f1e6;
+      --ink: #2a2118;
+      --muted: #6f5e4a;
+      --accent: #b6472e;
+      --accent-strong: #8b2e1f;
+      --accent-2: #1f5b4f;
+      --accent-3: #d1a85e;
+      --line: #e4d5c2;
+      --shadow: 0 10px 30px rgba(42, 33, 24, 0.12);
+      --radius: 16px;
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
+      --bottom-bar-height: 120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Avenir Next", "Gill Sans", "Candara", "Calibri", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 420px at 12% -10%, #fff8ee 0%, transparent 60%),
+        radial-gradient(800px 300px at 100% 0%, #fbe6d3 0%, transparent 55%),
+        linear-gradient(180deg, var(--bg) 0%, #f6efe3 60%, #f0e2d1 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(42, 33, 24, 0.06) 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.35;
+    }
+
+    .app {
+      position: relative;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-bottom: calc(var(--bottom-bar-height) + var(--safe-bottom));
+    }
+
+    .app-header {
+      padding: calc(var(--safe-top) + 18px) 16px 12px;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Baskerville", "Palatino Linotype", "Book Antiqua", serif;
+      font-size: 1.9rem;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      max-width: 640px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .metric-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .metric-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .metric-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .toolbar {
+      margin-top: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .toolbar-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 160px;
+      flex: 1;
+    }
+
+    label {
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    input,
+    select,
+    button,
+    textarea {
+      font: inherit;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      background: var(--surface);
+      color: var(--ink);
+      min-height: 44px;
+    }
+
+    input[type="search"] {
+      border-radius: 999px;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    button {
+      border: none;
+      background: var(--accent-2);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(31, 91, 79, 0.2);
+    }
+
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--accent-2);
+      border: 1px dashed var(--accent-2);
+    }
+
+    .btn-danger {
+      background: var(--accent);
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--accent-3);
+      outline-offset: 2px;
+    }
+
+    main {
+      padding: 12px 16px 24px;
+    }
+
+    .mobile-only {
+      display: block;
+    }
+
+    .desktop-only {
+      display: none;
+    }
+
+    .group {
+      margin: 24px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .group-header {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .group-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .group-meta {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      color: var(--muted);
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background: #eadcc9;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+      width: 0;
+      transition: width 0.3s ease;
+    }
+
+    .lens-separator {
+      background: linear-gradient(90deg, rgba(31, 91, 79, 0.12), rgba(209, 168, 94, 0.2));
+      border: 1px solid rgba(31, 91, 79, 0.2);
+      color: var(--accent-2);
+      font-weight: 600;
+      padding: 10px 12px;
+      border-radius: 12px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+
+    .card.completed {
+      opacity: 0.7;
+    }
+
+    .card.completed .card-action {
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+      text-decoration-color: rgba(42, 33, 24, 0.4);
+    }
+
+    .card-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .card-id {
+      font-weight: 700;
+      background: var(--surface-2);
+      padding: 4px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border: 1px solid transparent;
+      text-transform: uppercase;
+    }
+
+    .chip.priority-A {
+      background: #f7d7cf;
+      color: #7d2b1d;
+      border-color: #e9bdb1;
+    }
+
+    .chip.priority-B {
+      background: #f4e7c7;
+      color: #7a5a18;
+      border-color: #ecd9a5;
+    }
+
+    .chip.priority-C {
+      background: #d8efe5;
+      color: #1d5b4f;
+      border-color: #b9e1d2;
+    }
+
+    .chip.lens {
+      background: #e0ece8;
+      color: #1f5b4f;
+      border-color: #c8dfd8;
+    }
+
+    .chip.fps {
+      background: #e4e8f3;
+      color: #2f4a73;
+      border-color: #cdd6e9;
+    }
+
+    .badge {
+      background: #1f5b4f;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border-radius: 999px;
+      padding: 3px 8px;
+    }
+
+    .card-meta {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .card-action {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .details-toggle {
+      align-self: flex-start;
+    }
+
+    .details {
+      background: var(--surface-2);
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border: 1px solid var(--line);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 8px;
+    }
+
+    .detail-item {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px;
+    }
+
+    .detail-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .notes-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 44px;
+      border-radius: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      padding: 6px;
+    }
+
+    input[type="checkbox"].checkbox {
+      width: 24px;
+      height: 24px;
+      accent-color: var(--accent-2);
+    }
+
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 10px 12px calc(var(--safe-bottom) + 12px);
+      background: rgba(255, 253, 247, 0.92);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto auto;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .bottom-bar .filter-btn {
+      grid-column: 1;
+    }
+
+    .bottom-bar .progress-pill {
+      grid-column: 2;
+      align-self: center;
+      justify-self: end;
+      background: var(--accent-2);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .bottom-bar .search-field {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bottom-bar .search-field input {
+      flex: 1;
+    }
+
+    .bottom-bar .pending-toggle {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .drawer {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 16, 12, 0.45);
+      display: none;
+      align-items: flex-end;
+      z-index: 30;
+    }
+
+    .drawer.open {
+      display: flex;
+    }
+
+    .drawer-panel {
+      background: var(--surface);
+      width: 100%;
+      border-radius: 20px 20px 0 0;
+      padding: 16px;
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: 0 -10px 30px rgba(42, 33, 24, 0.18);
+      padding-bottom: calc(var(--safe-bottom) + 20px);
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .drawer-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .drawer-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .table-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 0.9rem;
+    }
+
+    th,
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      word-break: break-word;
+    }
+
+    th {
+      text-align: left;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    tr.completed {
+      background: #f6f0e6;
+      color: #6f5e4a;
+    }
+
+    .group-row td {
+      background: #f1e6d6;
+      font-weight: 600;
+      border-top: 2px solid var(--line);
+    }
+
+    .group-row-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lens-row td {
+      background: #e7f0ec;
+      color: var(--accent-2);
+      font-weight: 600;
+    }
+
+    .table-notes {
+      width: 100%;
+      min-height: 70px;
+    }
+
+    .empty-state {
+      background: var(--surface);
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (min-width: 900px) {
+      .mobile-only {
+        display: none;
+      }
+
+      .desktop-only {
+        display: block;
+      }
+
+      .app {
+        padding-bottom: 32px;
+      }
+
+      main {
+        padding-top: 24px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        color: #000;
+      }
+
+      body::before,
+      .bottom-bar,
+      .toolbar,
+      .drawer,
+      .details-toggle {
+        display: none !important;
+      }
+
+      .desktop-only {
+        display: block !important;
+      }
+
+      .mobile-only {
+        display: none !important;
+      }
+
+      .app-header {
+        padding: 0 0 12px;
+      }
+
+      .table-wrapper {
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+
+      th {
+        position: static;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Linha do Tempo</h1>
+  <div class="app">
+    <header class="app-header">
+      <div class="title-block">
+        <div class="eyebrow">Nosso Natal • 60s</div>
+        <h1>Timeline + Shot List</h1>
+        <p class="subtitle">Workflow por lente para reduzir trocas e manter a captação fluida.</p>
+      </div>
+
+      <div class="metrics" id="metrics">
+        <div class="metric-card">
+          <div class="metric-label">Progresso geral</div>
+          <div class="metric-value" id="metric-progress">0/0</div>
+          <div class="metric-sub" id="metric-percent">0%</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Prioridade A</div>
+          <div class="metric-value" id="metric-priority-a">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Prioridade B</div>
+          <div class="metric-value" id="metric-priority-b">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Prioridade C</div>
+          <div class="metric-value" id="metric-priority-c">0</div>
+        </div>
+      </div>
+
+      <div class="toolbar desktop-only" id="toolbar">
+        <div class="toolbar-row">
+          <div class="field">
+            <label for="search-desktop">Busca</label>
+            <input id="search-desktop" type="search" placeholder="Buscar em qualquer campo" aria-label="Buscar" />
+          </div>
+          <div class="field">
+            <label for="filter-lens">Lente</label>
+            <select id="filter-lens" aria-label="Filtrar por lente"></select>
+          </div>
+          <div class="field">
+            <label for="filter-priority">Prioridade</label>
+            <select id="filter-priority" aria-label="Filtrar por prioridade"></select>
+          </div>
+          <div class="field">
+            <label for="filter-fps">FPS</label>
+            <select id="filter-fps" aria-label="Filtrar por FPS"></select>
+          </div>
+          <div class="field">
+            <label for="sort-mode">Ordenação</label>
+            <select id="sort-mode" aria-label="Ordenação"></select>
+          </div>
+          <div class="field">
+            <label>
+              <span class="sr-only">Somente pendentes</span>
+              <input id="pending-only" type="checkbox" class="checkbox" /> Somente pendentes
+            </label>
+          </div>
+        </div>
+        <div class="toolbar-row">
+          <button class="btn-danger" id="reset-all">Marcar tudo como não feito</button>
+          <button class="btn-secondary" id="export-json">Exportar JSON</button>
+          <button class="btn-secondary" id="import-json">Importar JSON</button>
+          <button class="btn-outline" id="print-view">Imprimir</button>
+        </div>
+      </div>
     </header>
+
     <main>
-        <section>
-            <article>
-                <h2>Evento 1</h2>
-                <p>Descrição do evento.</p>
-            </article>
-            <article>
-                <h2>Evento 2</h2>
-                <p>Descrição do evento.</p>
-            </article>
-        </section>
+      <section id="mobile-view" class="mobile-only"></section>
+      <section id="desktop-view" class="desktop-only"></section>
     </main>
-    <footer>
-        <p>&copy; 2023 Sua Empresa</p>
-    </footer>
+  </div>
+
+  <div id="bottom-bar" class="bottom-bar mobile-only">
+    <button class="filter-btn" id="open-filters" aria-label="Abrir filtros">Filtros</button>
+    <div class="progress-pill" id="progress-mini">0/0</div>
+    <div class="search-field">
+      <input id="search-mobile" type="search" placeholder="Buscar" aria-label="Buscar" />
+    </div>
+    <label class="pending-toggle">
+      <input id="pending-only-mobile" type="checkbox" class="checkbox" /> Somente pendentes
+    </label>
+  </div>
+
+  <div id="filter-drawer" class="drawer" aria-hidden="true">
+    <div class="drawer-panel" role="dialog" aria-modal="true" aria-label="Filtros">
+      <div class="drawer-header">
+        <div class="drawer-title">Filtros e ordenação</div>
+        <button class="btn-secondary" id="close-filters" aria-label="Fechar">Fechar</button>
+      </div>
+      <div class="toolbar-row">
+        <div class="field">
+          <label for="filter-lens-mobile">Lente</label>
+          <select id="filter-lens-mobile"></select>
+        </div>
+        <div class="field">
+          <label for="filter-priority-mobile">Prioridade</label>
+          <select id="filter-priority-mobile"></select>
+        </div>
+        <div class="field">
+          <label for="filter-fps-mobile">FPS</label>
+          <select id="filter-fps-mobile"></select>
+        </div>
+        <div class="field">
+          <label for="sort-mode-mobile">Ordenação</label>
+          <select id="sort-mode-mobile"></select>
+        </div>
+      </div>
+      <div class="toolbar-row">
+        <button class="btn-outline" id="clear-filters">Limpar filtros</button>
+      </div>
+      <div class="drawer-actions">
+        <button class="btn-danger" id="reset-all-mobile">Marcar tudo como não feito</button>
+        <button class="btn-secondary" id="export-json-mobile">Exportar JSON</button>
+        <button class="btn-secondary" id="import-json-mobile">Importar JSON</button>
+        <button class="btn-outline" id="print-view-mobile">Imprimir</button>
+      </div>
+    </div>
+  </div>
+
+  <input id="import-input" type="file" accept="application/json" hidden />
+
+  <script>
+    const baseData = {
+      "project": {
+        "name": "Nosso Natal — Timeline + Shot List",
+        "videoDurationSec": 60,
+        "voDurationSec": 51,
+        "voStartsAt": "00:04",
+        "storageKeySuggestion": "nosso-natal-shotlist-v1",
+        "notes": "Dataset de pré-produção para timeline/shotlist com workflow por lente e status/notes persistentes."
+      },
+      "workflowOrder": [
+        "S1 – 15mm 24p (Ambiente)",
+        "S2 – 23mm 60p (Food macro / brasa)",
+        "S3 – 23mm 24p (Cozinha/forno)",
+        "S4 – 23mm 24p (Mesa/casal)",
+        "S1 – 15mm 24p (Ambiente)"
+      ],
+      "shots": [
+        {
+          "id": "A1",
+          "done": false,
+          "priority": "A",
+          "setup": "S1 – 15mm 24p (Ambiente)",
+          "timeIn": "00:00",
+          "timeOut": "00:02",
+          "vo": "—",
+          "shot": "Macro/Close (bokeh)",
+          "action": "Luzes da árvore em bokeh (textura natalina)",
+          "movement": "Estático",
+          "lens": "15mm",
+          "fps": "24/25",
+          "audio": "Room tone leve / trilha entrando",
+          "notes": ""
+        },
+        {
+          "id": "A2",
+          "done": false,
+          "priority": "A",
+          "setup": "S1 – 15mm 24p (Ambiente)",
+          "timeIn": "00:02",
+          "timeOut": "00:04",
+          "vo": "—",
+          "shot": "Close",
+          "action": "TV simulando lareira (reflexo em taça/enfeite)",
+          "movement": "Push-in leve",
+          "lens": "15mm",
+          "fps": "24/25",
+          "audio": "Foley crepitar sutil (opcional)",
+          "notes": ""
+        },
+        {
+          "id": "A3",
+          "done": false,
+          "priority": "A",
+          "setup": "S1 – 15mm 24p (Ambiente)",
+          "timeIn": "00:04",
+          "timeOut": "00:08",
+          "vo": "Tem um momento em que o Natal começa de verdade.",
+          "shot": "Geral",
+          "action": "Establishing da sala: árvore + mesa + lareira TV",
+          "movement": "Pan/trav lento",
+          "lens": "15mm",
+          "fps": "24/25",
+          "audio": "VO (L-cut) + ambiente",
+          "notes": ""
+        },
+        {
+          "id": "A4",
+          "done": false,
+          "priority": "A",
+          "setup": "S1 – 15mm 24p (Ambiente)",
+          "timeIn": "00:08",
+          "timeOut": "00:12",
+          "vo": "Não é quando a árvore acende… é quando a casa desacelera.",
+          "shot": "Close",
+          "action": "Luzes da árvore avivando o fundo (bokeh/close)",
+          "movement": "Estático",
+          "lens": "15mm",
+          "fps": "24/25",
+          "audio": "VO",
+          "notes": ""
+        },
+        {
+          "id": "A5",
+          "done": false,
+          "priority": "A",
+          "setup": "S2 – 23mm 60p (Food macro / brasa)",
+          "timeIn": "00:12",
+          "timeOut": "00:15",
+          "vo": "A lareira na TV dança; e aí sim, as luzes da árvore avivam o fundo.",
+          "shot": "Macro",
+          "action": "Brasa viva (textura, calor, fumaça sutil se seguro)",
+          "movement": "Handheld suave",
+          "lens": "23mm",
+          "fps": "50/60",
+          "audio": "Foley brasa/ambiente",
+          "notes": ""
+        },
+        {
+          "id": "A6",
+          "done": false,
+          "priority": "A",
+          "setup": "S2 – 23mm 60p (Food macro / brasa)",
+          "timeIn": "00:15",
+          "timeOut": "00:19",
+          "vo": "A brasa respira.",
+          "shot": "Macro",
+          "action": "Carne selando na grelha (chiado, fumaça, textura)",
+          "movement": "Push-in suave",
+          "lens": "23mm",
+          "fps": "50/60",
+          "audio": "Chiado real (prioridade)",
+          "notes": ""
+        },
+        {
+          "id": "A7",
+          "done": false,
+          "priority": "A",
+          "setup": "S2 – 23mm 60p (Food macro / brasa)",
+          "timeIn": "00:19",
+          "timeOut": "00:22",
+          "vo": "A carne sela e perfuma a sala.",
+          "shot": "Close",
+          "action": "Farofa sendo mexida (estalos, textura)",
+          "movement": "Tilt leve",
+          "lens": "23mm",
+          "fps": "50/60",
+          "audio": "Foley colher/estalos",
+          "notes": ""
+        },
+        {
+          "id": "A8",
+          "done": false,
+          "priority": "A",
+          "setup": "S3 – 23mm 24p (Cozinha/forno)",
+          "timeIn": "00:22",
+          "timeOut": "00:25",
+          "vo": "A farofa estala. As batatas douram devagar.",
+          "shot": "Close",
+          "action": "Assadeira/forno com batatas dourando (abrir forno, vapor)",
+          "movement": "Pull-back leve",
+          "lens": "23mm",
+          "fps": "24/25",
+          "audio": "Som de forno/ambiente",
+          "notes": ""
+        },
+        {
+          "id": "A9",
+          "done": false,
+          "priority": "A",
+          "setup": "S4 – 23mm 24p (Mesa/casal)",
+          "timeIn": "00:25",
+          "timeOut": "00:29",
+          "vo": "E a mesa, posta para dois, vira o centro da noite.",
+          "shot": "Médio/Close mãos",
+          "action": "Ajustes finais na mesa (guardanapo/taças/pratos)",
+          "movement": "Slider-like (simulado)",
+          "lens": "23mm",
+          "fps": "24/25",
+          "audio": "Talheres/tecido",
+          "notes": ""
+        },
+        {
+          "id": "A10",
+          "done": false,
+          "priority": "A",
+          "setup": "S4 – 23mm 24p (Mesa/casal)",
+          "timeIn": "00:29",
+          "timeOut": "00:38",
+          "vo": "Hoje é o nosso Natal — eu e a Lu. Um Natal de gratidão pelo ano que passou… e pela coragem de seguir. Num saldo do ano, planos mudaram, coisas deram certo e outras ensinaram.",
+          "shot": "Médio",
+          "action": "Casal senta/serve; planos discretos (sem melodrama) + detalhe do prato",
+          "movement": "Estático + cortes de detalhes",
+          "lens": "23mm",
+          "fps": "24/25",
+          "audio": "VO + foley leve",
+          "notes": ""
+        },
+        {
+          "id": "A11",
+          "done": false,
+          "priority": "A",
+          "setup": "S4 – 23mm 24p (Mesa/casal)",
+          "timeIn": "00:38",
+          "timeOut": "00:48",
+          "vo": "E no coração disso tudo, Jesus: luz, direção e recomeço.",
+          "shot": "Close",
+          "action": "Elemento cristão elegante (presépio/ornamento/Bíblia) + luzes ao fundo",
+          "movement": "Estático",
+          "lens": "23mm",
+          "fps": "24/25",
+          "audio": "Trilha abre um pouco",
+          "notes": ""
+        },
+        {
+          "id": "A12",
+          "done": false,
+          "priority": "A",
+          "setup": "S1 – 15mm 24p (Ambiente)",
+          "timeIn": "00:48",
+          "timeOut": "01:00",
+          "vo": "Que essa noite aqueça a sua casa também. Que a paz encontre lugar à mesa. E que o amor, conforte os corações! Feliz Natal e boas festas.",
+          "shot": "Geral + hold final",
+          "action": "Plano final: sala quente + mesa + árvore + lareira TV; segurar imagem para encerrar",
+          "movement": "Push-in muito leve ou estático",
+          "lens": "15mm",
+          "fps": "24/25",
+          "audio": "VO termina; trilha sobe; fade out",
+          "notes": ""
+        },
+        {
+          "id": "B1",
+          "done": false,
+          "priority": "B",
+          "setup": "S2 – 23mm 60p (Food macro / brasa)",
+          "timeIn": "—",
+          "timeOut": "—",
+          "vo": "—",
+          "shot": "Macro",
+          "action": "Sal caindo em contra-luz (textura)",
+          "movement": "Estático",
+          "lens": "23mm",
+          "fps": "50/60",
+          "audio": "Foley sal",
+          "notes": ""
+        },
+        {
+          "id": "B2",
+          "done": false,
+          "priority": "B",
+          "setup": "S2 – 23mm 60p (Food macro / brasa)",
+          "timeIn": "—",
+          "timeOut": "—",
+          "vo": "—",
+          "shot": "Macro",
+          "action": "Fumaça passando (segurança primeiro)",
+          "movement": "Handheld suave",
+          "lens": "23mm",
+          "fps": "50/60",
+          "audio": "Ambiente",
+          "notes": ""
+        },
+        {
+          "id": "C1",
+          "done": false,
+          "priority": "C",
+          "setup": "S1 – 15mm 24p (Ambiente)",
+          "timeIn": "—",
+          "timeOut": "—",
+          "vo": "—",
+          "shot": "Close",
+          "action": "Enfeites/guardanapo/vela (planos de respiro)",
+          "movement": "Estático",
+          "lens": "15mm",
+          "fps": "24/25",
+          "audio": "Room tone",
+          "notes": ""
+        }
+      ]
+    };
+
+    const storageKey = baseData.project.storageKeySuggestion || "nosso-natal-shotlist-v1";
+    let data = JSON.parse(JSON.stringify(baseData));
+    const state = {
+      query: "",
+      filters: {
+        lens: "all",
+        priority: "all",
+        fps: "all",
+        pendingOnly: false
+      },
+      sortMode: "workflow",
+      expanded: new Set()
+    };
+
+    const elements = {
+      metricsProgress: document.getElementById("metric-progress"),
+      metricsPercent: document.getElementById("metric-percent"),
+      metricsPriorityA: document.getElementById("metric-priority-a"),
+      metricsPriorityB: document.getElementById("metric-priority-b"),
+      metricsPriorityC: document.getElementById("metric-priority-c"),
+      progressMini: document.getElementById("progress-mini"),
+      mobileView: document.getElementById("mobile-view"),
+      desktopView: document.getElementById("desktop-view"),
+      searchDesktop: document.getElementById("search-desktop"),
+      searchMobile: document.getElementById("search-mobile"),
+      filterLens: document.getElementById("filter-lens"),
+      filterLensMobile: document.getElementById("filter-lens-mobile"),
+      filterPriority: document.getElementById("filter-priority"),
+      filterPriorityMobile: document.getElementById("filter-priority-mobile"),
+      filterFps: document.getElementById("filter-fps"),
+      filterFpsMobile: document.getElementById("filter-fps-mobile"),
+      sortMode: document.getElementById("sort-mode"),
+      sortModeMobile: document.getElementById("sort-mode-mobile"),
+      pendingDesktop: document.getElementById("pending-only"),
+      pendingMobile: document.getElementById("pending-only-mobile"),
+      drawer: document.getElementById("filter-drawer"),
+      importInput: document.getElementById("import-input")
+    };
+
+    function prepareData() {
+      data.shots.forEach((shot, index) => {
+        shot._index = index;
+        shot.done = Boolean(shot.done);
+        shot.notes = shot.notes || "";
+      });
+    }
+
+    function normalizeText(value) {
+      return String(value || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function timeToSeconds(value) {
+      if (!value || value === "—" || value === "-") {
+        return null;
+      }
+      const match = value.match(/^(\d{2}):(\d{2})$/);
+      if (!match) {
+        return null;
+      }
+      return Number(match[1]) * 60 + Number(match[2]);
+    }
+
+    function formatTimecode(shot) {
+      const hasIn = shot.timeIn && shot.timeIn !== "—";
+      const hasOut = shot.timeOut && shot.timeOut !== "—";
+      if (hasIn && hasOut) {
+        return `${shot.timeIn}–${shot.timeOut}`;
+      }
+      if (hasIn) {
+        return shot.timeIn;
+      }
+      return "—";
+    }
+
+    function escapeHTML(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function getUniqueValues(key) {
+      const values = [];
+      data.shots.forEach((shot) => {
+        if (shot[key] && !values.includes(shot[key])) {
+          values.push(shot[key]);
+        }
+      });
+      return values;
+    }
+
+    function saveStateToLocalStorage() {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify({
+          project: data.project,
+          workflowOrder: data.workflowOrder,
+          shots: data.shots
+        }));
+      } catch (error) {
+        console.warn("Falha ao salvar no localStorage", error);
+      }
+    }
+
+    function loadStateFromLocalStorage() {
+      try {
+        const raw = localStorage.getItem(storageKey);
+        if (!raw) {
+          prepareData();
+          return;
+        }
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.shots)) {
+          data = parsed;
+        } else if (parsed && parsed.state) {
+          const checks = parsed.state.checks || {};
+          const notes = parsed.state.notes || {};
+          data.shots.forEach((shot) => {
+            if (Object.prototype.hasOwnProperty.call(checks, shot.id)) {
+              shot.done = Boolean(checks[shot.id]);
+            }
+            if (Object.prototype.hasOwnProperty.call(notes, shot.id)) {
+              shot.notes = notes[shot.id];
+            }
+          });
+        }
+        prepareData();
+      } catch (error) {
+        console.warn("Falha ao carregar do localStorage", error);
+        prepareData();
+      }
+    }
+
+    function applyFiltersAndSort() {
+      const query = normalizeText(state.query.trim());
+      const filtered = data.shots.filter((shot) => {
+        if (state.filters.pendingOnly && shot.done) {
+          return false;
+        }
+        if (state.filters.lens !== "all" && shot.lens !== state.filters.lens) {
+          return false;
+        }
+        if (state.filters.priority !== "all" && shot.priority !== state.filters.priority) {
+          return false;
+        }
+        if (state.filters.fps !== "all" && shot.fps !== state.filters.fps) {
+          return false;
+        }
+        if (!query) {
+          return true;
+        }
+        const searchable = normalizeText([
+          shot.id,
+          shot.priority,
+          shot.setup,
+          shot.timeIn,
+          shot.timeOut,
+          shot.vo,
+          shot.shot,
+          shot.action,
+          shot.movement,
+          shot.lens,
+          shot.fps,
+          shot.audio,
+          shot.notes
+        ].join(" "));
+        return searchable.includes(query);
+      });
+
+      const sorted = [...filtered];
+      if (state.sortMode === "timeline") {
+        sorted.sort((a, b) => {
+          const timeA = timeToSeconds(a.timeIn);
+          const timeB = timeToSeconds(b.timeIn);
+          if (timeA === null && timeB === null) {
+            return a._index - b._index;
+          }
+          if (timeA === null) {
+            return 1;
+          }
+          if (timeB === null) {
+            return -1;
+          }
+          return timeA - timeB || a._index - b._index;
+        });
+      }
+
+      if (state.sortMode === "priority") {
+        const order = { A: 0, B: 1, C: 2 };
+        sorted.sort((a, b) => {
+          const prioA = order[a.priority] ?? 99;
+          const prioB = order[b.priority] ?? 99;
+          if (prioA !== prioB) {
+            return prioA - prioB;
+          }
+          const timeA = timeToSeconds(a.timeIn);
+          const timeB = timeToSeconds(b.timeIn);
+          if (timeA === null && timeB === null) {
+            return a._index - b._index;
+          }
+          if (timeA === null) {
+            return 1;
+          }
+          if (timeB === null) {
+            return -1;
+          }
+          return timeA - timeB || a._index - b._index;
+        });
+      }
+
+      if (state.sortMode === "workflow") {
+        sorted.sort((a, b) => a._index - b._index);
+      }
+
+      return sorted;
+    }
+
+    function splitByLargestGaps(shots, count) {
+      const segments = Array.from({ length: count }, () => []);
+      if (count <= 1) {
+        segments[0] = [...shots].sort((a, b) => a._index - b._index);
+        return segments;
+      }
+
+      const timed = shots.filter((shot) => timeToSeconds(shot.timeIn) !== null);
+      const untimed = shots.filter((shot) => timeToSeconds(shot.timeIn) === null);
+
+      if (timed.length === 0) {
+        segments[0] = [...shots].sort((a, b) => a._index - b._index);
+        return segments;
+      }
+
+      const timedSorted = [...timed].sort((a, b) => timeToSeconds(a.timeIn) - timeToSeconds(b.timeIn));
+      const gaps = [];
+      for (let i = 0; i < timedSorted.length - 1; i += 1) {
+        const current = timeToSeconds(timedSorted[i].timeIn);
+        const next = timeToSeconds(timedSorted[i + 1].timeIn);
+        gaps.push({ index: i, gap: next - current });
+      }
+
+      const splitPoints = gaps
+        .sort((a, b) => b.gap - a.gap)
+        .slice(0, count - 1)
+        .map((item) => item.index)
+        .sort((a, b) => a - b);
+
+      let start = 0;
+      const timedSegments = [];
+      splitPoints.forEach((point) => {
+        timedSegments.push(timedSorted.slice(start, point + 1));
+        start = point + 1;
+      });
+      timedSegments.push(timedSorted.slice(start));
+
+      while (timedSegments.length < count) {
+        timedSegments.push([]);
+      }
+
+      timedSegments[0] = timedSegments[0].concat(untimed);
+
+      return timedSegments.map((segment, index) => {
+        segments[index] = segment.sort((a, b) => a._index - b._index);
+        return segments[index];
+      });
+    }
+
+    function renderGroups(shots) {
+      if (state.sortMode !== "workflow") {
+        return [
+          {
+            name: "Resultados",
+            shots
+          }
+        ];
+      }
+
+      const groupSlots = data.workflowOrder.map((name) => ({ name, shots: [] }));
+      const setupIndices = new Map();
+      data.workflowOrder.forEach((name, index) => {
+        if (!setupIndices.has(name)) {
+          setupIndices.set(name, []);
+        }
+        setupIndices.get(name).push(index);
+      });
+
+      const shotsBySetup = new Map();
+      shots.forEach((shot) => {
+        if (!shotsBySetup.has(shot.setup)) {
+          shotsBySetup.set(shot.setup, []);
+        }
+        shotsBySetup.get(shot.setup).push(shot);
+      });
+
+      const extras = [];
+      shotsBySetup.forEach((shotList, setupName) => {
+        const indices = setupIndices.get(setupName);
+        if (!indices || indices.length === 0) {
+          extras.push(...shotList);
+          return;
+        }
+        const segments = splitByLargestGaps(shotList, indices.length);
+        indices.forEach((groupIndex, segmentIndex) => {
+          groupSlots[groupIndex].shots.push(...segments[segmentIndex]);
+        });
+      });
+
+      const groups = groupSlots.filter((group) => group.shots.length > 0);
+      if (extras.length) {
+        groups.push({ name: "Outros", shots: extras });
+      }
+      return groups;
+    }
+
+    function lensChangeLabel(previous, next) {
+      if (!previous || !next || previous === next) {
+        return "";
+      }
+      if (previous === "15mm" && next === "23mm") {
+        return `Trocar lente: ${previous} → ${next}`;
+      }
+      if (previous === "23mm" && next === "15mm") {
+        return `Voltar lente: ${previous} → ${next}`;
+      }
+      return `Trocar lente: ${previous} → ${next}`;
+    }
+
+    function renderMobileCards() {
+      const shots = applyFiltersAndSort();
+      const groups = renderGroups(shots);
+
+      if (!shots.length) {
+        elements.mobileView.innerHTML = "<div class=\"empty-state\">Nenhum take encontrado com os filtros atuais.</div>";
+        return;
+      }
+
+      let previousLens = null;
+      const html = groups.map((group) => {
+        const groupLens = group.shots[0] ? group.shots[0].lens : null;
+        const separatorLabel = state.sortMode === "workflow" ? lensChangeLabel(previousLens, groupLens) : "";
+        if (groupLens) {
+          previousLens = groupLens;
+        }
+
+        const doneCount = group.shots.filter((shot) => shot.done).length;
+        const total = group.shots.length;
+        const percent = total ? Math.round((doneCount / total) * 100) : 0;
+
+        const cards = group.shots.map((shot) => {
+          const isExpanded = state.expanded.has(shot.id);
+          const detailsId = `details-${shot.id}`;
+          const checkboxId = `done-${shot.id}`;
+          const notesId = `notes-${shot.id}`;
+          return `
+            <article class="card ${shot.done ? "completed" : ""}" data-id="${escapeHTML(shot.id)}">
+              <div class="card-head">
+                <label class="checkbox-label" for="${checkboxId}">
+                  <input id="${checkboxId}" class="checkbox" type="checkbox" data-done-id="${escapeHTML(shot.id)}" ${shot.done ? "checked" : ""} />
+                  <span class="sr-only">Feito ${escapeHTML(shot.id)}</span>
+                </label>
+                <span class="card-id">${escapeHTML(shot.id)}</span>
+                <span class="chip priority-${escapeHTML(shot.priority)}">${escapeHTML(shot.priority)}</span>
+                <span class="chip lens">${escapeHTML(shot.lens)}</span>
+                <span class="chip fps">${escapeHTML(shot.fps)}</span>
+                ${shot.done ? "<span class=\"badge\">Feito</span>" : ""}
+              </div>
+              <div class="card-meta">${escapeHTML(shot.setup)} • ${escapeHTML(formatTimecode(shot))}</div>
+              <div class="card-action">${escapeHTML(shot.action)}</div>
+              <button class="btn-secondary details-toggle" data-toggle-id="${escapeHTML(shot.id)}" aria-expanded="${isExpanded}">Ver detalhes</button>
+              <div class="details" id="${detailsId}" ${isExpanded ? "" : "hidden"}>
+                <div class="detail-grid">
+                  <div class="detail-item">
+                    <div class="detail-label">VO</div>
+                    <div>${escapeHTML(shot.vo)}</div>
+                  </div>
+                  <div class="detail-item">
+                    <div class="detail-label">Plano</div>
+                    <div>${escapeHTML(shot.shot)}</div>
+                  </div>
+                  <div class="detail-item">
+                    <div class="detail-label">Movimento</div>
+                    <div>${escapeHTML(shot.movement)}</div>
+                  </div>
+                  <div class="detail-item">
+                    <div class="detail-label">Áudio/Foley</div>
+                    <div>${escapeHTML(shot.audio)}</div>
+                  </div>
+                </div>
+                <div class="notes-field">
+                  <label for="${notesId}">Notas</label>
+                  <textarea id="${notesId}" data-note-id="${escapeHTML(shot.id)}">${escapeHTML(shot.notes)}</textarea>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join("");
+
+        return `
+          ${separatorLabel ? `<div class=\"lens-separator\">${separatorLabel}</div>` : ""}
+          <section class="group">
+            <div class="group-header">
+              <div class="group-title">${escapeHTML(group.name)}</div>
+              <div class="group-meta">
+                <span>${doneCount}/${total} feitos</span>
+                <div class="progress-bar"><span style="width: ${percent}%"></span></div>
+              </div>
+            </div>
+            ${cards}
+          </section>
+        `;
+      }).join("");
+
+      elements.mobileView.innerHTML = html;
+    }
+
+    function renderDesktopTable() {
+      const shots = applyFiltersAndSort();
+      const groups = renderGroups(shots);
+
+      if (!shots.length) {
+        elements.desktopView.innerHTML = "<div class=\"empty-state\">Nenhum take encontrado com os filtros atuais.</div>";
+        return;
+      }
+
+      let previousLens = null;
+      const bodyRows = groups.map((group) => {
+        const groupLens = group.shots[0] ? group.shots[0].lens : null;
+        const separatorLabel = state.sortMode === "workflow" ? lensChangeLabel(previousLens, groupLens) : "";
+        if (groupLens) {
+          previousLens = groupLens;
+        }
+
+        const doneCount = group.shots.filter((shot) => shot.done).length;
+        const total = group.shots.length;
+        const percent = total ? Math.round((doneCount / total) * 100) : 0;
+
+        const groupRow = `
+          ${separatorLabel ? `<tr class=\"lens-row\"><td colspan=\"13\">${separatorLabel}</td></tr>` : ""}
+          <tr class="group-row">
+            <td colspan="13">
+              <div class="group-row-inner">
+                <span>${escapeHTML(group.name)}</span>
+                <span>${doneCount}/${total} feitos</span>
+                <div class="progress-bar"><span style="width: ${percent}%"></span></div>
+              </div>
+            </td>
+          </tr>
+        `;
+
+        const rows = group.shots.map((shot) => {
+          const checkboxId = `done-table-${shot.id}`;
+          return `
+            <tr class="${shot.done ? "completed" : ""}">
+              <td>
+                <label class="checkbox-label" for="${checkboxId}">
+                  <input id="${checkboxId}" class="checkbox" type="checkbox" data-done-id="${escapeHTML(shot.id)}" ${shot.done ? "checked" : ""} />
+                  <span class="sr-only">Feito ${escapeHTML(shot.id)}</span>
+                </label>
+              </td>
+              <td>${escapeHTML(shot.id)}</td>
+              <td>${escapeHTML(shot.priority)}</td>
+              <td>${escapeHTML(shot.setup)}</td>
+              <td>${escapeHTML(shot.timeIn)} / ${escapeHTML(shot.timeOut)}</td>
+              <td>${escapeHTML(shot.vo)}</td>
+              <td>${escapeHTML(shot.shot)}</td>
+              <td>${escapeHTML(shot.action)}</td>
+              <td>${escapeHTML(shot.movement)}</td>
+              <td>${escapeHTML(shot.lens)}</td>
+              <td>${escapeHTML(shot.fps)}</td>
+              <td>${escapeHTML(shot.audio)}</td>
+              <td>
+                <textarea class="table-notes" data-note-id="${escapeHTML(shot.id)}">${escapeHTML(shot.notes)}</textarea>
+              </td>
+            </tr>
+          `;
+        }).join("");
+
+        return groupRow + rows;
+      }).join("");
+
+      elements.desktopView.innerHTML = `
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Feito</th>
+                <th>ID</th>
+                <th>Prioridade</th>
+                <th>Setup</th>
+                <th>Timecode</th>
+                <th>VO</th>
+                <th>Plano</th>
+                <th>Ação</th>
+                <th>Movimento</th>
+                <th>Lente</th>
+                <th>FPS</th>
+                <th>Áudio/Foley</th>
+                <th>Notas</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${bodyRows}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function updateMetrics() {
+      const total = data.shots.length;
+      const done = data.shots.filter((shot) => shot.done).length;
+      const percent = total ? Math.round((done / total) * 100) : 0;
+      const counts = { A: 0, B: 0, C: 0 };
+      data.shots.forEach((shot) => {
+        if (counts[shot.priority] !== undefined) {
+          counts[shot.priority] += 1;
+        }
+      });
+
+      elements.metricsProgress.textContent = `${done}/${total}`;
+      elements.metricsPercent.textContent = `${percent}%`;
+      elements.metricsPriorityA.textContent = counts.A;
+      elements.metricsPriorityB.textContent = counts.B;
+      elements.metricsPriorityC.textContent = counts.C;
+      elements.progressMini.textContent = `${done}/${total}`;
+    }
+
+    function setInputValue(element, value) {
+      if (!element) {
+        return;
+      }
+      if (element.value !== value) {
+        element.value = value;
+      }
+    }
+
+    function syncControls() {
+      setInputValue(elements.searchDesktop, state.query);
+      setInputValue(elements.searchMobile, state.query);
+      setInputValue(elements.filterLens, state.filters.lens);
+      setInputValue(elements.filterLensMobile, state.filters.lens);
+      setInputValue(elements.filterPriority, state.filters.priority);
+      setInputValue(elements.filterPriorityMobile, state.filters.priority);
+      setInputValue(elements.filterFps, state.filters.fps);
+      setInputValue(elements.filterFpsMobile, state.filters.fps);
+      setInputValue(elements.sortMode, state.sortMode);
+      setInputValue(elements.sortModeMobile, state.sortMode);
+      if (elements.pendingDesktop) {
+        elements.pendingDesktop.checked = state.filters.pendingOnly;
+      }
+      if (elements.pendingMobile) {
+        elements.pendingMobile.checked = state.filters.pendingOnly;
+      }
+    }
+
+    function populateSelect(select, options, labelAll) {
+      select.innerHTML = "";
+      const allOption = document.createElement("option");
+      allOption.value = "all";
+      allOption.textContent = labelAll;
+      select.appendChild(allOption);
+
+      options.forEach((value) => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        select.appendChild(option);
+      });
+    }
+
+    function renderToolbar() {
+      if (!renderToolbar.initialized) {
+        populateSelect(elements.filterLens, getUniqueValues("lens"), "Todas");
+        populateSelect(elements.filterLensMobile, getUniqueValues("lens"), "Todas");
+        populateSelect(elements.filterPriority, ["A", "B", "C"], "Todas");
+        populateSelect(elements.filterPriorityMobile, ["A", "B", "C"], "Todas");
+        populateSelect(elements.filterFps, getUniqueValues("fps"), "Todos");
+        populateSelect(elements.filterFpsMobile, getUniqueValues("fps"), "Todos");
+
+        const sortOptions = [
+          { value: "workflow", label: "Workflow (por setup/lente)" },
+          { value: "timeline", label: "Timeline (timecode)" },
+          { value: "priority", label: "Prioridade (A primeiro)" }
+        ];
+        const fillSort = (select) => {
+          select.innerHTML = "";
+          sortOptions.forEach((option) => {
+            const opt = document.createElement("option");
+            opt.value = option.value;
+            opt.textContent = option.label;
+            select.appendChild(opt);
+          });
+        };
+        fillSort(elements.sortMode);
+        fillSort(elements.sortModeMobile);
+
+        const handleSearch = (event) => {
+          state.query = event.target.value;
+          render();
+        };
+        const handleFilter = (key, value) => {
+          state.filters[key] = value;
+          render();
+        };
+        const handleSort = (value) => {
+          state.sortMode = value;
+          render();
+        };
+
+        elements.searchDesktop.addEventListener("input", handleSearch);
+        elements.searchMobile.addEventListener("input", handleSearch);
+        elements.filterLens.addEventListener("change", (event) => handleFilter("lens", event.target.value));
+        elements.filterLensMobile.addEventListener("change", (event) => handleFilter("lens", event.target.value));
+        elements.filterPriority.addEventListener("change", (event) => handleFilter("priority", event.target.value));
+        elements.filterPriorityMobile.addEventListener("change", (event) => handleFilter("priority", event.target.value));
+        elements.filterFps.addEventListener("change", (event) => handleFilter("fps", event.target.value));
+        elements.filterFpsMobile.addEventListener("change", (event) => handleFilter("fps", event.target.value));
+        elements.sortMode.addEventListener("change", (event) => handleSort(event.target.value));
+        elements.sortModeMobile.addEventListener("change", (event) => handleSort(event.target.value));
+        elements.pendingDesktop.addEventListener("change", (event) => handleFilter("pendingOnly", event.target.checked));
+        elements.pendingMobile.addEventListener("change", (event) => handleFilter("pendingOnly", event.target.checked));
+
+        document.getElementById("reset-all").addEventListener("click", resetAll);
+        document.getElementById("reset-all-mobile").addEventListener("click", resetAll);
+        document.getElementById("export-json").addEventListener("click", exportJSON);
+        document.getElementById("export-json-mobile").addEventListener("click", exportJSON);
+        document.getElementById("import-json").addEventListener("click", () => importJSON());
+        document.getElementById("import-json-mobile").addEventListener("click", () => importJSON());
+        document.getElementById("print-view").addEventListener("click", () => window.print());
+        document.getElementById("print-view-mobile").addEventListener("click", () => window.print());
+
+        document.getElementById("open-filters").addEventListener("click", () => toggleDrawer(true));
+        document.getElementById("close-filters").addEventListener("click", () => toggleDrawer(false));
+        document.getElementById("clear-filters").addEventListener("click", () => {
+          state.query = "";
+          state.filters = { lens: "all", priority: "all", fps: "all", pendingOnly: false };
+          render();
+        });
+        elements.drawer.addEventListener("click", (event) => {
+          if (event.target === elements.drawer) {
+            toggleDrawer(false);
+          }
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            toggleDrawer(false);
+          }
+        });
+
+        elements.importInput.addEventListener("change", (event) => {
+          const file = event.target.files && event.target.files[0];
+          if (file) {
+            importJSON(file);
+          }
+          event.target.value = "";
+        });
+
+        elements.mobileView.addEventListener("click", (event) => {
+          const toggle = event.target.closest("[data-toggle-id]");
+          if (toggle) {
+            const shotId = toggle.getAttribute("data-toggle-id");
+            if (state.expanded.has(shotId)) {
+              state.expanded.delete(shotId);
+            } else {
+              state.expanded.add(shotId);
+            }
+            renderMobileCards();
+            return;
+          }
+        });
+
+        const handleDoneChange = (event) => {
+          const target = event.target;
+          if (!target.matches("[data-done-id]")) {
+            return;
+          }
+          const shotId = target.getAttribute("data-done-id");
+          const shot = data.shots.find((item) => item.id === shotId);
+          if (!shot) {
+            return;
+          }
+          shot.done = target.checked;
+          saveStateToLocalStorage();
+          render();
+        };
+
+        const handleNotesInput = (event) => {
+          const target = event.target;
+          if (!target.matches("[data-note-id]")) {
+            return;
+          }
+          const shotId = target.getAttribute("data-note-id");
+          const shot = data.shots.find((item) => item.id === shotId);
+          if (!shot) {
+            return;
+          }
+          shot.notes = target.value;
+          saveStateToLocalStorage();
+        };
+
+        elements.mobileView.addEventListener("change", handleDoneChange);
+        elements.desktopView.addEventListener("change", handleDoneChange);
+        elements.mobileView.addEventListener("input", handleNotesInput);
+        elements.desktopView.addEventListener("input", handleNotesInput);
+
+        renderToolbar.initialized = true;
+      }
+
+      syncControls();
+      updateMetrics();
+    }
+
+    function toggleDrawer(open) {
+      if (open) {
+        elements.drawer.classList.add("open");
+        elements.drawer.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      } else {
+        elements.drawer.classList.remove("open");
+        elements.drawer.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      }
+    }
+
+    function resetAll() {
+      const confirmed = window.confirm("Tem certeza que deseja marcar tudo como não feito?");
+      if (!confirmed) {
+        return;
+      }
+      data.shots.forEach((shot) => {
+        shot.done = false;
+        shot.notes = "";
+      });
+      saveStateToLocalStorage();
+      render();
+    }
+
+    function exportJSON() {
+      const payload = {
+        project: data.project,
+        workflowOrder: data.workflowOrder,
+        shots: data.shots,
+        state: {
+          checks: Object.fromEntries(data.shots.map((shot) => [shot.id, shot.done])),
+          notes: Object.fromEntries(data.shots.map((shot) => [shot.id, shot.notes || ""]))
+        }
+      };
+
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "nosso-natal-shotlist.json";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function importJSON(file) {
+      if (!file) {
+        elements.importInput.click();
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          if (!parsed || !Array.isArray(parsed.shots)) {
+            alert("Arquivo inválido: JSON sem array de shots.");
+            return;
+          }
+          data = {
+            project: parsed.project || data.project,
+            workflowOrder: parsed.workflowOrder || data.workflowOrder,
+            shots: parsed.shots
+          };
+
+          if (parsed.state) {
+            data.shots.forEach((shot) => {
+              if (parsed.state.checks && Object.prototype.hasOwnProperty.call(parsed.state.checks, shot.id)) {
+                shot.done = Boolean(parsed.state.checks[shot.id]);
+              }
+              if (parsed.state.notes && Object.prototype.hasOwnProperty.call(parsed.state.notes, shot.id)) {
+                shot.notes = parsed.state.notes[shot.id];
+              }
+            });
+          }
+
+          prepareData();
+          saveStateToLocalStorage();
+          render();
+          alert("Importação concluída.");
+        } catch (error) {
+          alert("Não foi possível importar o JSON.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function render() {
+      renderToolbar();
+      renderMobileCards();
+      renderDesktopTable();
+    }
+
+    loadStateFromLocalStorage();
+    render();
+  </script>
 </body>
 </html>
