@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Nosso Natal — Timeline + Shot List</title>
   <style>
+    /* Base + safe-area */
     :root {
       --bg: #f6efe6;
       --bg-strong: #f2e3d2;
@@ -222,6 +223,7 @@
       display: none;
     }
 
+    /* Cards + grupos (mobile) */
     .group {
       margin: 24px 0;
       display: flex;
@@ -435,6 +437,7 @@
       accent-color: var(--accent-2);
     }
 
+    /* Barra fixa mobile + drawer */
     .bottom-bar {
       position: fixed;
       left: 0;
@@ -533,6 +536,7 @@
       margin-top: 12px;
     }
 
+    /* Tabela desktop */
     .table-wrapper {
       background: var(--surface);
       border: 1px solid var(--line);
@@ -617,6 +621,7 @@
       border: 0;
     }
 
+    /* Breakpoints e impressão */
     @media (min-width: 900px) {
       .mobile-only {
         display: none;
@@ -802,6 +807,7 @@
   <input id="import-input" type="file" accept="application/json" hidden />
 
   <script>
+    // Dataset inicial (pré-carregado).
     const baseData = {
       "project": {
         "name": "Nosso Natal — Timeline + Shot List",
@@ -1062,6 +1068,7 @@
       ]
     };
 
+    // Estado global e cache local.
     const storageKey = baseData.project.storageKeySuggestion || "nosso-natal-shotlist-v1";
     let data = JSON.parse(JSON.stringify(baseData));
     const state = {
@@ -1158,6 +1165,7 @@
       return values;
     }
 
+    // Persistência local (checkbox + notas).
     function saveStateToLocalStorage() {
       try {
         localStorage.setItem(storageKey, JSON.stringify({
@@ -1199,6 +1207,7 @@
       }
     }
 
+    // Filtros e ordenação da lista.
     function applyFiltersAndSort() {
       const query = normalizeText(state.query.trim());
       const filtered = data.shots.filter((shot) => {
@@ -1392,6 +1401,7 @@
       return `Trocar lente: ${previous} → ${next}`;
     }
 
+    // Renderização mobile (cards).
     function renderMobileCards() {
       const shots = applyFiltersAndSort();
       const groups = renderGroups(shots);
@@ -1635,6 +1645,7 @@
       });
     }
 
+    // Toolbar e eventos globais.
     function renderToolbar() {
       if (!renderToolbar.initialized) {
         populateSelect(elements.filterLens, getUniqueValues("lens"), "Todas");
